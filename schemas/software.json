@@ -1,0 +1,36 @@
+{
+    "schema": {
+        "title": {
+            "type": "string",
+            "title": "Review Title"
+        },
+        "description": {
+            "type": "string",
+            "title": "Review Description"
+        },
+        "software": {
+            "type": "href",
+            "title": "Software URI",
+            "default": ""
+        }
+    },
+    "form": [
+        {
+            "key": "title",
+            "title": "Título"
+        },
+        {
+            "key": "description",
+            "title": "Descrição"
+        },
+        {
+            "key": "software",
+            "title": "Software",
+            "type": "autocomplete"
+        },
+        {
+            "type": "submit",
+            "title": "Submit"
+        }
+    ]
+}
