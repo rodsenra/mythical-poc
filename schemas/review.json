@@ -1,8 +1,8 @@
 {
     "schema": {
         "id": {
-            "type": "id",
-            "title": "Review Title"
+            "type": "string",
+            "default": "review"
         },
         "title": {
             "type": "string",
@@ -11,14 +11,13 @@
         "description": {
             "type": "string",
             "title": "Review Description"
-        },
-        "software": {
-            "type": "href",
-            "title": "Software URI",
-            "default": ""
         }
     },
     "form": [
+        {
+            "key": "id",
+            "type": "hidden"
+        },
         {
             "key": "title",
             "title": "Título"
@@ -26,11 +25,6 @@
         {
             "key": "description",
             "title": "Descrição"
-        },
-        {
-            "key": "software",
-            "title": "Software",
-            "type": "autocomplete"
         },
         {
             "type": "submit",

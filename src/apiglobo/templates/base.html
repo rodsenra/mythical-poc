@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="shortcut icon" href="" />
+    <link rel="apple-touch-icon" href="" />
+    <link rel="author" href="humans.txt" />
+
+    <meta name="description" content="" />
+
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/master.css') }}" />
+
+    {% block head %}
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+
+</head>
+<body>
+
+<header id="layout-platform-header">
+
+    <h1>API Globo</h1>
+
+</header>
+
+ {% block content %}
+ {% endblock %}
+
+</body>
+
+</html>
+
