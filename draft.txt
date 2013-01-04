@@ -1,0 +1,16 @@
+Review  
+ * Titulo
+ * Descrição
+ * Opinião
+ * Nota Geral
+ * [Nota Quesito]
+ * Video
+ * Imagem
+ * Autor
+ * Data
+ 
+Software
+ * Nome
+ * Imagem (ícone)
+ * Fabricante
+ * Categoria
