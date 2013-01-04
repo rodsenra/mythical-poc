@@ -1,3 +1,3 @@
-cd ./jsonform/playground/
+cd ./jsonform/
 
 python -m SimpleHTTPServer
