@@ -1,8 +1,10 @@
 {
+    "meta":{
+        "schema_name": "review"
+    },
     "schema": {
         "id": {
-            "type": "string",
-            "default": "review"
+            "type": "string"
         },
         "title": {
             "type": "string",
