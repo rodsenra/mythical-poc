@@ -15,7 +15,7 @@ def update(obj, namespace, resource_type, resource_id):
 
 
 def retrieve(namespace, resource_type, resource_id):
-    obj = None
+    obj = {"title": "Software"}
     return obj
 
 
