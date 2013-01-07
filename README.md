@@ -8,19 +8,32 @@ to the redesign of Globo.com platform infra-structure.
 Requirements for the New Platform
 =================================
 
-  * single CMA 
-  * integrated access to multiple databases (including different data models)
-  # support for mobile apps
+  Backend as a Service (BaaS) composed by cloud-based RESTful services: 
+    * unified CMA 
+    * uniform access to all enterprise data (CMS,Search, Semantics)
+    * authentication 
+    * authorization
+    * billing
+    
+  The new architeture should naturally lead to support for mobile apps
 
 
 Objectives for this project
 ===========================
 
-Design a draft of the new architecture for content publication.
-Specify a draft for the interface contracts for:
+ 1) Design a draft of the new architecture for content publication.
+    Define a first version of the interfaces and contracts between the
+    several components of the architecture.
+    There is no need for a complete implementation at the end of the project.
+    Development of code will be done on-demand to validate concepts.
  
-  * CMA
-  * Database integrator
+ 2) The design of the architecture will define the communication between the teams.
+    We should be able to understand which stories are relevant to which teams. 
+
+  The outcome of this project should be to deliver a draft implementation that
+  does CMA+CDA for some content using the base elements of new architecture.
+  The focus will be to elucidate doubts about the new architecture.
+
 
 Desired features
 ================
