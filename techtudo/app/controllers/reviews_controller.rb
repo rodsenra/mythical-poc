@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
   def show
-    @review = RestClient.get("http://localhost:5100/data/reviews/#{params[:id]}")
+    @review = Review.find(params[:id])
   end
 end
