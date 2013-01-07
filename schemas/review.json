@@ -9,10 +9,6 @@
         "title": {
             "type": "string",
             "title": "Review Title"
-        },
-        "description": {
-            "type": "string",
-            "title": "Review Description"
         }
     },
     "form": [
@@ -23,10 +19,6 @@
         {
             "key": "title",
             "title": "Título"
-        },
-        {
-            "key": "description",
-            "title": "Descrição"
         },
         {
             "type": "submit",

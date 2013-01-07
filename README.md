@@ -54,3 +54,5 @@ Execution
 cd ./jsonform/
 
 python -m SimpleHTTPServer
+
+curl -i -XPOST 'http://localhost:5100/data/reviews' -H "Content-Type: application/json"  -d '{"title":"Novissimo Bla"}'
