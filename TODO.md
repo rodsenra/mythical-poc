@@ -1,7 +1,6 @@
 TODO
 ====
 
-0. Fluxo total para titulo de review 
-1. Adicionar software ao review (relacionamento)
-2. Comentários (hierarquia / relacionamento)
-2. Rating (freqüencia de escrita)
+2. Adicionar software ao review (relacionamento)
+3. Comentários (hierarquia / relacionamento)
+4. Rating (freqüencia de escrita)
