@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, request, jsonify
 import mythicaldb
+from mythicaldb import DEFAULT_NAMESPACE as NAMESPACE
 
 schema_blueprint = Blueprint('schema_blueprint', __name__)
 
-NAMESPACE = "dataservices"
-
 @schema_blueprint.route("/schemas", methods=['POST'])
 def create():
-    mythicaldb.create(request.json, NAMESPACE, "schema", request.json["meta"]["schema_name"])
+    schema_id = mythicaldb.create(NAMESPACE, "schema", request.json)
     response = Response(status=201)
-    response.headers['Location'] = 'dummy'
+    response.headers['Location'] = '/schemas/{0}'.format(schema_id)
     return response
 
 
@@ -21,5 +20,7 @@ def list():
 
 @schema_blueprint.route("/schemas/<schema_id>", methods=['GET'])
 def find(schema_id):
-    response = Response(status=200)
+    doc = mythicaldb.retrieve(NAMESPACE, "schema", schema_id)
+    response = jsonify(doc)
+    response.status_code = 200
     return response

@@ -3,6 +3,8 @@
 from apiglobo.settings import ES_ENDPOINT
 from pyelasticsearch import ElasticSearch
 
+DEFAULT_NAMESPACE = "data"
+
 es = ElasticSearch(ES_ENDPOINT)
 
 class MythicalDBException(Exception):
