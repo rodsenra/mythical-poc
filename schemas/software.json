@@ -1,18 +1,16 @@
 {
+    "meta":{
+        "schema_name": "Software"
+    },
     "schema": {
         "title": {
             "type": "string",
-            "title": "Review Title"
+            "title": "Title"
         },
         "description": {
             "type": "string",
-            "title": "Review Description"
+            "title": "Any software artifact"
         },
-        "software": {
-            "type": "href",
-            "title": "Software URI",
-            "default": ""
-        }
     },
     "form": [
         {

@@ -35,6 +35,11 @@ Objectives for this project
   The focus will be to elucidate doubts about the new architecture.
 
 
+References
+==========
+
+ * https://github.com/globocom/mysqlapi
+
 Desired features
 ================
 
