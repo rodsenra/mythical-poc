@@ -34,6 +34,15 @@ Objectives for this project
   does CMA+CDA for some content using the base elements of new architecture.
   The focus will be to elucidate doubts about the new architecture.
 
+Data Model
+==========
+
+  Review <----> Software <-----> Categoria
+     |                 \----------> Rating
+     |
+     \- Title
+      \- Comments -> Comment
+
 
 References
 ==========

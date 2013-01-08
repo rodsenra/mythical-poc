@@ -28,3 +28,7 @@ def retrieve(namespace, resource_type, resource_id):
 
 def delete(namespace, resource_type, resource_id):
     pass
+
+
+def search(text, namespace=None, resource_type=None):
+    return es.search(text, doc_type=resource_type, index=namespace)
