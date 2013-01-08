@@ -8,6 +8,12 @@
 </head>
 <body>
 
+<form action="/busca" method="GET">
+    <label for="campo_busca">busca:</label>
+    <input id="campo_busca" name="q"/>
+    <input type="submit"/>
+</form>
+
 <%= yield %>
 
 </body>
