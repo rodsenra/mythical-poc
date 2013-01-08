@@ -1,3 +1,3 @@
-<% @reviews.each do |review| %>
-    <a href="/reviews/<%= review['id'] %>">Título do Review: <%= review["title"] %></a>
+<% @reviews["results"].each do |review| %>
+    <p><a href="/reviews/<%= review['id'] %>">Título do Review: <%= review["title"] %></a></p>
 <% end %>
