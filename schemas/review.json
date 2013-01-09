@@ -9,7 +9,12 @@
         "title": {
             "type": "string",
             "title": "Review Title"
-        }
+        },
+        "software": {
+            "$ref": "/schemas/software",
+            "minimum": 1,
+            "maximum": 1
+        }        
     },
     "form": [
         {
