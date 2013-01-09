@@ -1,7 +1,8 @@
 TODO
 ====
 
-1. Busca de uma review por título (caso de altíssima freqüência de leitura)
+Ok - Busca de uma review por título (caso de altíssima freqüência de leitura)
+
 1. Adicionar software ao review (relacionamento)
 1. Comentários (hierarquia / relacionamento)
 1. Gravacao e consula de rating (caso de alta freqüencia de escrita)
