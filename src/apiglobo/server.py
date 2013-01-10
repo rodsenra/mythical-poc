@@ -23,5 +23,4 @@ def page_not_found(e):
 
 app.register_blueprint(schemas.schema_blueprint)
 app.register_blueprint(data.data_blueprint)
-print(settings.ES_ENDPOINT)
 app.run(host=app.config['SERVER_HOST'], port=app.config['SERVER_PORT'])

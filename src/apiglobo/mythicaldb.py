@@ -8,8 +8,6 @@ from apiglobo import settings
 
 DEFAULT_NAMESPACE = "data"
 
-print(settings.ES_ENDPOINT)
-
 txt_search_db = ElasticSearch(settings.ES_ENDPOINT)
 graph_db = neo4j.GraphDatabaseService(settings.NEO4J_ENDPOINT)
 
