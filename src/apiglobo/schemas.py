@@ -12,6 +12,12 @@ def create():
     response.headers['Location'] = '/schemas/{0}'.format(schema_id)
     return response
 
+@schema_blueprint.route("/schemas/<schema_id>", methods=['PUT'])
+def create_with_id(schema_id):
+    schema_id = mythicaldb.create(NAMESPACE, "schema", request.json, schema_id)
+    response = Response(status=201)
+    response.headers['Location'] = '/schemas/{0}'.format(schema_id)
+    return response
 
 @schema_blueprint.route("/schemas", methods=['GET'])
 def list():
