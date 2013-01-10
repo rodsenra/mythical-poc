@@ -1,5 +1,4 @@
 {
-    "uid": "software_form",
     "$schema": "/data/schemas/form",
     "render_schema": "software_schema",
     "fields": [

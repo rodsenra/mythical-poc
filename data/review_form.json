@@ -1,5 +1,4 @@
 {
-    "uid": "review_form",
     "$schema": "/data/schemas/form",
     "render_schema": "review_schema",
     "fields": [

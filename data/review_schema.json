@@ -1,5 +1,4 @@
 {
-    "uid": "review_schema",
     "$schema": "http://json-schema.org/schema",
     "title": "Software review",
     "type": "object",

@@ -64,5 +64,22 @@ cd ./jsonform/
 
 python -m SimpleHTTPServer
 
+curl -i -XPUT  'http://localhost:5100/data/schema/review_schema' -H 'Content-type: application/json' -T ./data/review_schema.json
+curl -i -XPUT  'http://localhost:5100/data/schema/software_schema' -H 'Content-type: application/json' -T ./data/software_schema.json
+
+HTTP/1.0 201 CREATED
+Content-Type: text/html; charset=utf-8
+Location: http://localhost:5100/data/schema/review_schema
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: PUT, HEAD, OPTIONS, GET
+Access-Control-Max-Age: 21600
+Content-Length: 0
+Server: Werkzeug/0.8.3 Python/2.7.1
+Date: Thu, 10 Jan 2013 18:03:30 GMT
+
+Deprecated
+==========
+
 curl -i -XPOST 'http://localhost:5100/data/reviews' -H "Content-Type: application/json"  -d '{"title":"Novissimo Bla"}'
 curl -i -XPOST 'http://localhost:5100/schemas' -H "Content-Type: application/json"  -T "schemas/review_schema.json"
