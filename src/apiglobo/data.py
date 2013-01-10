@@ -11,8 +11,8 @@ data_blueprint = Blueprint('data_blueprint', __name__)
 @data_blueprint.route("/data/<type_name>", methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
 def create_data(type_name):
-    doc_id = mythicaldb.create(NAMESPACE, type_name, request.json)
-    response = Response(201)
+    doc_id = mythicaldb.create(request.json, NAMESPACE, type_name)
+    response = Response(status=201)
     response.headers['Location'] = '/data/{0}/{1}'.format(type_name, doc_id)
     return response
 
@@ -20,7 +20,7 @@ def create_data(type_name):
 @data_blueprint.route("/data/<type_name>/<doc_id>", methods=['PUT', 'OPTIONS'])
 @crossdomain(origin='*')
 def create_with_id(type_name, doc_id):
-    db_doc_id = mythicaldb.create(NAMESPACE, type_name, request.json, doc_id)
+    db_doc_id = mythicaldb.create_or_update(request.json, NAMESPACE, type_name, doc_id)
     response = Response(status=201)
     response.headers['Location'] = '/data/{0}/{1}'.format(type_name, doc_id)
     return response

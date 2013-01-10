@@ -17,7 +17,7 @@ class MythicalDBException(Exception):
 
 def get_references(obj):
     refs = []
-    for key,subprop_dict in obj.get("properties", []).items():
+    for key,subprop_dict in obj.get("properties", {}).items():
         for subprop_key,value in subprop_dict.items():
             if subprop_key=="$ref":
                 relationship_name = subprop_dict.get("relationship_name","relates")

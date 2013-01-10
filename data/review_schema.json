@@ -12,7 +12,8 @@
         },
         "software": {
             "required": true,
-            "$ref": "/data/schemas/software_schema"
+            "relationship_name": "revises",
+            "$ref": "/data/schema/software_schema"
         }
     }
 }
