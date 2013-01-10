@@ -1,18 +1,8 @@
 {
-    "meta":{
-        "schema_name": "Software"
-    },
-    "schema": {
-        "title": {
-            "type": "string",
-            "title": "Title"
-        },
-        "description": {
-            "type": "string",
-            "title": "Any software artifact"
-        },
-    },
-    "form": [
+    "uid": "software_form",
+    "$schema": "/data/schemas/form",
+    "render_schema": "software_schema",
+    "fields": [
         {
             "key": "title",
             "title": "Título"

@@ -1,0 +1,19 @@
+{
+    "uid": "review_form",
+    "$schema": "/data/schemas/form",
+    "render_schema": "review_schema",
+    "fields": [
+        {
+            "key": "id",
+            "type": "hidden"
+        },
+        {
+            "key": "title",
+            "title": "Título"
+        },
+        {
+            "type": "submit",
+            "title": "Submit"
+        }
+    ]
+}

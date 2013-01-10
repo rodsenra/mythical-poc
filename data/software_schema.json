@@ -1,0 +1,16 @@
+{
+    "uid": "software_schema",
+    "$schema": "http://json-schema.org/schema",
+    "title": "Software",
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string",
+            "title": "Title"
+        },
+        "description": {
+            "type": "string",
+            "title": "Any software artifact"
+        }
+    }
+}
