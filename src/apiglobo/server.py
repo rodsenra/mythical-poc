@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, render_template
-from apiglobo import schemas, data
+import sys
+from apiglobo import schemas, data, settings
 
 
 app = Flask(__name__)
@@ -17,4 +18,8 @@ app.register_blueprint(schemas.schema_blueprint)
 app.register_blueprint(data.data_blueprint)
 
 if __name__ == '__main__':
+    if sys.argv:
+        override_settings = __import__(sys.argv[1])
+        settings.__dict__.update(override_settings.__dict__)
+    print(settings.ES_ENDPOINT)
     app.run(host=app.config['SERVER_HOST'], port=app.config['SERVER_PORT'])
