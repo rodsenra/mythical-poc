@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import uuid
+import json
 from py2neo import neo4j
 from pyelasticsearch import ElasticSearch
 from apiglobo.settings import ES_ENDPOINT, NEO4J_ENDPOINT
@@ -15,18 +16,21 @@ class MythicalDBException(Exception):
     pass
 
 
-def create(namespace, resource_type, obj):
-    uid = uuid.uuid4()
+def create(namespace, resource_type, obj, uid=None):
+    uid = uid if uid  else uuid.uuid4()  
     obj["uid"] = str(uid) # inject id into object with a common field name
-
     # FIXME: implement transaction all-or-nothing to add data to all DBs
 
     record = txt_search_db.index(namespace, resource_type, obj, id=uid)
     if not record['ok']:
         raise MythicalDBException("Failed to index record {0:s} in ElasticSearch.".format(obj))
-
-    graph_db.create(obj)
     
+    # Neo4J does not accept nested properties
+    # We have chosen to embed the data structure as a json string instead
+    node_record = dict([(key, json.dumps(value)) for key, value in obj.items()])
+    # FIXME ids Neo4J - ES
+    node_list = graph_db.create(node_record)
+    print(node_list[0].id)
     return record['_id']
 
 

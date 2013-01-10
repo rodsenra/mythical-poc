@@ -16,6 +16,7 @@ def create_review(type_name):
     response.headers['Location'] = '/data/{0}/{1}'.format(type_name, doc_id)
     return response
 
+
 @data_blueprint.route("/data/<type_name>", methods=['GET'])
 @crossdomain(origin='*')
 def filter_review(type_name):
@@ -25,9 +26,9 @@ def filter_review(type_name):
                                     namespace=NAMESPACE,
                                     resource_type=type_name)
         filterd_results_by_type = [dict(item['_source'], **{'id': item['_id']}) for item in results['hits']['hits']]
-        response = jsonify({"results": filterd_results_by_type})        
+        response = jsonify({"results": filterd_results_by_type})
         response.status_code = 200
-        return response        
+        return response
     else:
         abort(404)
 
@@ -35,6 +36,7 @@ def filter_review(type_name):
 #    response = Response(201)
 #    response.headers['Location'] = '/data/{0}/{1}'.format(type_name, doc_id)
 #    return response
+
 
 @data_blueprint.route("/data/<type_name>/<item_id>", methods=['GET'])
 def get_review(type_name, item_id):
