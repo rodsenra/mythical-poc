@@ -5,7 +5,7 @@ from flask import Flask, render_template
 import sys
 # DISCLAIMER: Hack Maligno in POC: xGH - viabilizar override da config em diferentes ambientes
 from apiglobo import settings
-if sys.argv:
+if len(sys.argv) > 1:
     override_settings = __import__(sys.argv[1])
     settings.__dict__.update(override_settings.__dict__)
 
