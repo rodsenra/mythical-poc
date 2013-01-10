@@ -3182,7 +3182,7 @@ $.fn.jsonFormErrors = function(errors, options) {
  * - form: The options form layout description, overrides default layout
  * - prefix: String to use to prefix computed IDs. Default is an empty string.
  *  Use this option if JSON Form is used multiple times in an application with
- *  schemas that have overlapping parameter names to avoid running into multiple
+ *  data that have overlapping parameter names to avoid running into multiple
  *  IDs issues. Default value is "jsonform-[counter]".
  * - transloadit: Transloadit parameters when transloadit is used
  * - validate: Validates form against schema upon submission. Uses the value

@@ -12,7 +12,7 @@
             },
             "software": {
                 "required": true,
-                "$ref": "/schemas/software"
+                "$ref": "/data/software"
             }
         }
     },

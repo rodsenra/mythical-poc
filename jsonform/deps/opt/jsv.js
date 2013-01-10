@@ -998,7 +998,7 @@ var exports = exports || this,
 		this.errors = [];
 
 		/**
-		 * A hash table of every instance and what schemas were validated against it.
+		 * A hash table of every instance and what data were validated against it.
 		 * <p>
 		 * The key of each item in the table is the URI of the instance that was validated.
 		 * The value of this key is an array of strings of URIs of the schema that validated it.
@@ -1478,7 +1478,7 @@ var exports = exports || this,
 	};
 
 	/**
-	 * Merges two schemas/instances together.
+	 * Merges two data/instances together.
 	 */
 
 	function inherits(base, extra, extension) {
@@ -1513,7 +1513,7 @@ var exports = exports || this,
 	}
 
 	/**
-	 * An Environment is a sandbox of schemas thats behavior is different from other environments.
+	 * An Environment is a sandbox of data thats behavior is different from other environments.
 	 * 
 	 * @name Environment
 	 * @class
@@ -2028,7 +2028,7 @@ var exports = exports || this,
 		formatURI : formatURI,
 
 		/**
-		 * Merges two schemas/instance together.
+		 * Merges two data/instance together.
 		 * 
 		 * @event //utility
 		 * @param {JSONSchema|Any} base The old value to merge
@@ -2983,7 +2983,7 @@ var exports = exports || this,
 			if (link && instance._uri !== link) {
 				if (instance._env._schemas[link]) {
 					instance = instance._env._schemas[link];
-					return instance;  //retrieved schemas are guaranteed to be initialized
+					return instance;  //retrieved data are guaranteed to be initialized
 				} else if (instance._env._options["validateReferences"]) {
 					throw new InitializationError(instance, instance._schema, "{link:full}", "Unknown schema reference", link);
 				}
@@ -3084,7 +3084,7 @@ var exports = exports || this,
 
 	LINKS_00 = ENVIRONMENT.createSchema(LINKS_00_JSON, HYPERSCHEMA_00, "http://json-schema.org/draft-00/links#");
 
-	//We need to reinitialize these 3 schemas as they all reference each other
+	//We need to reinitialize these 3 data as they all reference each other
 	SCHEMA_00 = ENVIRONMENT.createSchema(SCHEMA_00.getValue(), HYPERSCHEMA_00, "http://json-schema.org/draft-00/schema#");
 	HYPERSCHEMA_00 = ENVIRONMENT.createSchema(HYPERSCHEMA_00.getValue(), HYPERSCHEMA_00, "http://json-schema.org/draft-00/hyper-schema#");
 	LINKS_00 = ENVIRONMENT.createSchema(LINKS_00.getValue(), HYPERSCHEMA_00, "http://json-schema.org/draft-00/links#");
@@ -3117,7 +3117,7 @@ var exports = exports || this,
 
 	LINKS_01 = ENVIRONMENT.createSchema(LINKS_01_JSON, HYPERSCHEMA_01, "http://json-schema.org/draft-01/links#");
 
-	//We need to reinitialize these 3 schemas as they all reference each other
+	//We need to reinitialize these 3 data as they all reference each other
 	SCHEMA_01 = ENVIRONMENT.createSchema(SCHEMA_01.getValue(), HYPERSCHEMA_01, "http://json-schema.org/draft-01/schema#");
 	HYPERSCHEMA_01 = ENVIRONMENT.createSchema(HYPERSCHEMA_01.getValue(), HYPERSCHEMA_01, "http://json-schema.org/draft-01/hyper-schema#");
 	LINKS_01 = ENVIRONMENT.createSchema(LINKS_01.getValue(), HYPERSCHEMA_01, "http://json-schema.org/draft-01/links#");
@@ -3222,7 +3222,7 @@ var exports = exports || this,
 
 	LINKS_02 = ENVIRONMENT.createSchema(LINKS_02_JSON, HYPERSCHEMA_02, "http://json-schema.org/draft-02/links#");
 
-	//We need to reinitialize these 3 schemas as they all reference each other
+	//We need to reinitialize these 3 data as they all reference each other
 	SCHEMA_02 = ENVIRONMENT.createSchema(SCHEMA_02.getValue(), HYPERSCHEMA_02, "http://json-schema.org/draft-02/schema#");
 	HYPERSCHEMA_02 = ENVIRONMENT.createSchema(HYPERSCHEMA_02.getValue(), HYPERSCHEMA_02, "http://json-schema.org/draft-02/hyper-schema#");
 	LINKS_02 = ENVIRONMENT.createSchema(LINKS_02.getValue(), HYPERSCHEMA_02, "http://json-schema.org/draft-02/links#");
@@ -3564,7 +3564,7 @@ var exports = exports || this,
 				if (link && instance._uri !== link) {
 					if (instance._env._schemas[link]) {
 						instance = instance._env._schemas[link];
-						return instance;  //retrieved schemas are guaranteed to be initialized
+						return instance;  //retrieved data are guaranteed to be initialized
 					} else if (instance._env._options["validateReferences"]) {
 						throw new InitializationError(instance, instance._schema, "$ref", "Unknown schema reference", link);
 					}
@@ -3649,7 +3649,7 @@ var exports = exports || this,
 
 	ENVIRONMENT.setOption("defaultSchemaURI", "http://json-schema.org/draft-03/hyper-schema#");
 
-	//We need to reinitialize these schemas as they reference each other
+	//We need to reinitialize these data as they reference each other
 	HYPERSCHEMA_03 = ENVIRONMENT.createSchema(HYPERSCHEMA_03.getValue(), HYPERSCHEMA_03, "http://json-schema.org/draft-03/hyper-schema#");
 
 	ENVIRONMENT.setOption("latestJSONSchemaSchemaURI", "http://json-schema.org/draft-03/schema#");

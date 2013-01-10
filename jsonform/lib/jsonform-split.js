@@ -129,7 +129,7 @@
       }
     });
 
-    // Split the schema into two schemas.
+    // Split the schema into two data.
     // (note that the "excluded" JSON Form object may contain keys that
     // are never referenced in the initial JSON Form layout. That's normal)
     var schemaProperties = jsonform.schema;

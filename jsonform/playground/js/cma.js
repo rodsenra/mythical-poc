@@ -1,6 +1,6 @@
 $('document').ready(function () {
     $.ajax({
-        url: 'http://10.2.180.22:5100/schemas/1',
+        url: 'http://10.2.180.22:5100/data/1',
         dataType: 'json'
     }).done(function (code) {
         $.extend(code, 
