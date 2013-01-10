@@ -3,7 +3,14 @@
 
 from flask import Flask, render_template
 import sys
-from apiglobo import schemas, data, settings
+# DISCLAIMER: Hack Maligno in POC: xGH - viabilizar override da config em diferentes ambientes
+from apiglobo import settings
+if sys.argv:
+    override_settings = __import__(sys.argv[1])
+    settings.__dict__.update(override_settings.__dict__)
+
+
+from apiglobo import schemas, data
 
 
 app = Flask(__name__)
@@ -16,10 +23,5 @@ def page_not_found(e):
 
 app.register_blueprint(schemas.schema_blueprint)
 app.register_blueprint(data.data_blueprint)
-
-if __name__ == '__main__':
-    if sys.argv:
-        override_settings = __import__(sys.argv[1])
-        settings.__dict__.update(override_settings.__dict__)
-    print(settings.ES_ENDPOINT)
-    app.run(host=app.config['SERVER_HOST'], port=app.config['SERVER_PORT'])
+print(settings.ES_ENDPOINT)
+app.run(host=app.config['SERVER_HOST'], port=app.config['SERVER_PORT'])
