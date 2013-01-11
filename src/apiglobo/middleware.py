@@ -37,6 +37,7 @@ class LogMiddleware(object):
         with self.app.request_context(environ) as context:
             method = context.request.method
             url = context.request.url
+            headers = context.request.headers
             try:
                 response = self.app.full_dispatch_request()
             except BaseException:
@@ -45,6 +46,8 @@ class LogMiddleware(object):
                 response = self.app.make_response((error_json, 500, HEADER_JSON))
             else:
                 self.logger.info("Request '%s' [%s]" % (url, method))
+                for header in headers:
+                    self.logger.info("%s: %s" % (header[0], header[1]))
 
             return response(environ, start_response)
 
