@@ -1,0 +1,14 @@
+{
+    "_default_": {
+        "date_formats": ["yyyy-MM-dd", "dd-MM-yyyy", "date_optional_time"],
+        "properties": {
+            "uid": {
+                "include_in_all": false,
+                "type": "string",
+                "store": "yes",
+                "index_analyzer": "poc_uid",
+                "search_analyzer": "poc_uid"
+            }
+        }
+    }
+}
