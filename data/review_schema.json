@@ -3,9 +3,6 @@
     "title": "Software review",
     "type": "object",
     "properties": {
-        "id": {
-            "type": "string"
-        },
         "title": {
             "type": "string",
             "title": "Review Title"
@@ -13,7 +10,7 @@
         "software": {
             "required": true,
             "relationship_name": "revises",
-            "$ref": "/data/schema/software_schema"
+            "$ref": "/data/schemas/software"
         }
     }
 }

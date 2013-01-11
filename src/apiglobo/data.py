@@ -7,22 +7,29 @@ from apiglobo.mythicaldb import DEFAULT_NAMESPACE as NAMESPACE
 
 data_blueprint = Blueprint('data_blueprint', __name__)
 
+def primary_validation():
+    try:
+        request.json['$schema']
+    except KeyError:
+        abort(400)
 
 @data_blueprint.route("/data/<type_name>", methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
 def create_data(type_name):
-    doc_id = mythicaldb.create(request.json, NAMESPACE, type_name)
+    primary_validation()
+    uid = mythicaldb.create(request.json, NAMESPACE, type_name)
     response = Response(status=201)
-    response.headers['Location'] = '/data/{0}/{1}'.format(type_name, doc_id)
+    response.headers['Location'] = uid
     return response
 
 
-@data_blueprint.route("/data/<type_name>/<doc_id>", methods=['PUT', 'OPTIONS'])
+@data_blueprint.route("/data/<type_name>/<doc_slug>", methods=['PUT', 'OPTIONS'])
 @crossdomain(origin='*')
-def create_with_id(type_name, doc_id):
-    db_doc_id = mythicaldb.create_or_update(request.json, NAMESPACE, type_name, doc_id)
+def create_with_id(type_name, doc_slug):
+    primary_validation()
+    uid = mythicaldb.create_or_update(request.json, NAMESPACE, type_name, doc_slug)
     response = Response(status=201)
-    response.headers['Location'] = '/data/{0}/{1}'.format(type_name, doc_id)
+    response.headers['Location'] = uid
     return response
 
 
@@ -42,10 +49,10 @@ def filter_data(type_name):
         abort(404)
 
 
-@data_blueprint.route("/data/<type_name>/<doc_id>", methods=['GET'])
+@data_blueprint.route("/data/<type_name>/<doc_slug>", methods=['GET'])
 @crossdomain(origin='*')
-def retrieve(type_name, doc_id):
-    doc = mythicaldb.retrieve(NAMESPACE, type_name, doc_id)
+def retrieve(type_name, doc_slug):
+    doc = mythicaldb.retrieve(NAMESPACE, type_name, doc_slug)
     response = jsonify(doc)
     response.status_code = 200
     return response

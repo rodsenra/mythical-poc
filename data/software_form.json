@@ -3,8 +3,8 @@
     "render_schema": "software_schema",
     "fields": [
         {
-            "key": "title",
-            "title": "Título"
+            "key": "name",
+            "title": "Nome"
         },
         {
             "key": "description",

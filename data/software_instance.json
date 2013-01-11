@@ -1,0 +1,5 @@
+{
+    "$schema": "/data/schemas/software",
+    "name": "Windows 8",
+    "description": "Nova versão do sistema operacional da M$ com abordagem unificada desktop e mobile."
+}

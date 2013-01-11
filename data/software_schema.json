@@ -3,13 +3,13 @@
     "title": "Software",
     "type": "object",
     "properties": {
-        "title": {
+        "name": {
             "type": "string",
-            "title": "Title"
+            "title": "Name"
         },
         "description": {
             "type": "string",
-            "title": "Any software artifact"
+            "title": "Description"
         }
     }
 }
