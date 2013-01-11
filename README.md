@@ -56,7 +56,15 @@ Desired features
   * versioning (which level: API, resource, ...)
   * Role-based access control (RBAC) model for authorization profiles 
 
-    
+Configuration
+=============
+ We applied two configurations in ElasticSearch:
+  - elasticsearch/config/default-mapping.json 
+  - elasticsearch/config/elasticsearch.yml
+ 
+ This files are inside the mythical-poc project tree, below config/elasticsearch. 
+ The goal of the configuration is to define that "uid" field always has exact match.
+ 
 Execution
 =========
 
@@ -86,6 +94,10 @@ Clean-up Neo4j
 --------------
   start no=relationship(*) delete no;
   start no=node(*) delete no;
+
+Query ES
+--------
+  curl -XGET 'http://localhost:9200/data/_search?q=uid:"/data/schemas/software"&pretty=true'
 
 
 Deprecated

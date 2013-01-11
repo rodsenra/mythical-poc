@@ -18,13 +18,20 @@ graph_db = neo4j.GraphDatabaseService(settings.NEO4J_ENDPOINT)
 class MythicalDBException(Exception):
     pass
 
+def split_uid(uid):
+    fragments = uid.split("/")
+    _namespace = fragments[-3]
+    _type = fragments[-2]
+    _slug = fragments[-1]
+    return (_namespace, _type, _slug)
+
 def get_references(obj):
     refs = []
     for key,subprop_dict in obj.get("properties", {}).items():
         for subprop_key,value in subprop_dict.items():
             if subprop_key=="$ref":
                 relationship_name = subprop_dict.get("relationship_name","relates")
-                refs.append((relationship_name, value))
+                refs.append((key, relationship_name, value))
     return refs
 
 
@@ -54,10 +61,8 @@ def create(obj, namespace, resource_type, slug=None):
     index.add("slug", slug, pivot_node)
     
     refs = get_references(obj)
-    for relationship_name, node_path in refs:
-        path_fragments = node_path.split("/")
-        ref_type = path_fragments[-2]
-        ref_slug = path_fragments[-1]
+    for property_name, relationship_name, node_path in refs:
+        ref_ns, ref_type, ref_slug = split_uid(node_path)
         ref_index = graph_db.get_index(neo4j.Node, ref_type)
         referred_nodes = ref_index.get("slug", ref_slug)
         for referred_node in referred_nodes: 
@@ -66,6 +71,7 @@ def create(obj, namespace, resource_type, slug=None):
     # Detect if it is a schema or instance
     schema_uid = obj['$schema']
     if (schema_uid != JSON_SCHEMA_URI) and (resource_type != SCHEMAS_INDEX):
+        # Create relation between instance and its schema
         uid_fragments = schema_uid.split("/")
         schema_slug = uid_fragments[-1]
         schemas_index = graph_db.get_index(neo4j.Node, SCHEMAS_INDEX)
@@ -74,12 +80,24 @@ def create(obj, namespace, resource_type, slug=None):
             # highlander - there should be only one!
             pivot_node.create_relationship_to(schema_node, 'describedby')
 
-        # ----- Search by ES 
-#        search_response = txt_search_db.search("uid:{0}".format(schema_uid), SCHEMAS_INDEX)     
-#        if search_response[u'hits'][u'total']!=1:
-#            raise Exception("Inconsistency in Database. More than one schema defined for {0}".format(schema_uid))
-#        schema_doc = search_response[u'hits'][u'hits'][0]['_source']
-#        schema_doc['']
+        # Create relation between instance and referred instances
+        # There is a premise here that the only schema type will be JSON_SCHEMA_URI
+        # if that changes then this code should consider this alternate case
+        search_response = txt_search_db.search('uid:"{0}"'.format(schema_uid), 
+                                               doc_type=SCHEMAS_INDEX,
+                                               index=namespace)
+        if search_response[u'hits'][u'total']!=1:
+            raise Exception("Inconsistency in Database. More than one schema defined for {0}".format(schema_uid))
+
+        schema_obj = search_response[u'hits'][u'hits'][0]['_source']
+        obj_refs = get_references(schema_obj)
+        for property_name, relationship_name, node_path in obj_refs:
+            ref_ns, ref_type, ref_slug = split_uid(node_path)
+            referred_index = graph_db.get_index(neo4j.Node, ref_type)
+            referred_nodes = referred_index.get("slug", schema_slug)
+            for referred_node in referred_nodes:
+                # highlander - there should be only one!
+                pivot_node.create_relationship_to(referred_node, relationship_name)
 
     return uid
 
