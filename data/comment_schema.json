@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "title": "Comment",
+    "type": "object",
+    "properties": {
+        "username": {
+            "type": "string",
+            "title": "Username"
+        },
+        "body": {
+            "type": "string",
+            "title": "Comment"
+        },
+        "reply": {
+            "required": false,
+            "relationship_name": "replies",
+            "$ref": "/data/schemas/comment"
+        },
+        "context": {
+            "required": true,
+            "relationship_name": "has_context"
+        }
+    }
+}

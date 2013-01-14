@@ -11,7 +11,13 @@
             "required": true,
             "relationship_name": "revises",
             "$ref": "/data/schemas/software"
+        },
+        "comments": {
+            "required": false,
+            "relationship_name": "has_comments",
+            "$ref": "/data/schemas/comment"
         }
+
     }
 }
 

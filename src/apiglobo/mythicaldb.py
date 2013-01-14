@@ -44,7 +44,7 @@ def get_references_from_input_json(obj):
     refs = []
     for key,subprop_dict in obj.items():
         for subprop_key,value in subprop_dict.items():
-            if subprop_key=="$ref":
+            if subprop_key=="relationship_name":
                 relationship_name = subprop_dict.get("relationship_name","relates")
                 refs.append((key, relationship_name, value))
     return refs
@@ -113,12 +113,14 @@ def create(obj, namespace, resource_type, slug=None):
         schema_obj = search_response[u'hits'][u'hits'][0]['_source']
         obj_refs = get_references_from_input_json(schema_obj.get("properties", {}))
         for property_name, relationship_name, node_path in obj_refs:
-            ref_ns, ref_type, ref_slug = split_uid(obj[property_name])
-            referred_index = graph_db.get_index(neo4j.Node, ref_type)
-            referred_nodes = referred_index.get("slug", ref_slug)
-            referred_node = referred_nodes[0]  # highlander - there should be only one!
-            referred_node_id = obj[property_name]
-            pivot_node.create_relationship_to(referred_node, relationship_name)
+            property_value = obj.get(property_name)
+            if property_value is not None:
+                ref_ns, ref_type, ref_slug = split_uid(property_value)
+                referred_index = graph_db.get_index(neo4j.Node, ref_type)
+                referred_nodes = referred_index.get("slug", ref_slug)
+                referred_node = referred_nodes[0]  # highlander - there should be only one!
+                referred_node_id = obj[property_name]
+                pivot_node.create_relationship_to(referred_node, relationship_name)
 
     return uid
 
@@ -158,6 +160,8 @@ def update(obj, namespace, resource_type, resource_id):
 
 def create_or_update(obj, namespace, resource_type, resource_id):
     # TODO: think about sync model between backend databases, for the time being assume in sync
+    # We assume that optional fields are not present in the input data (json format),
+    # if this holds then we should remove non-filled fields
     refered_node = None
     ref_index = graph_db.get_index(neo4j.Node, resource_type)
     
