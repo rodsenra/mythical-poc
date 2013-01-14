@@ -1,0 +1,10 @@
+{
+    "$schema": "/data/schemas/comment",
+    "username": "Fulano",
+    "body": "Não gostei muito não bruxão.",
+    "context": "/data/reviews/5e36bce2-17d2-4697-a501-4cead500b60d",
+    "reply": "/data/comments/6e95e64f-6062-416c-bf1a-769afcef01ad"
+}
+
+
+
