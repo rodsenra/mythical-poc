@@ -118,9 +118,10 @@ def create(obj, namespace, resource_type, slug=None):
                 ref_ns, ref_type, ref_slug = split_uid(property_value)
                 referred_index = graph_db.get_index(neo4j.Node, ref_type)
                 referred_nodes = referred_index.get("slug", ref_slug)
-                referred_node = referred_nodes[0]  # highlander - there should be only one!
-                referred_node_id = obj[property_name]
-                pivot_node.create_relationship_to(referred_node, relationship_name)
+                if referred_nodes:
+                    referred_node = referred_nodes[0]  # highlander - there should be only one!
+                    referred_node_id = obj[property_name]
+                    pivot_node.create_relationship_to(referred_node, relationship_name)
 
     return uid
 
