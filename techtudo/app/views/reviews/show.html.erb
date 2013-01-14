@@ -2,3 +2,7 @@
 
 <h2>Título do Review: <%= @review["title"] %></h2>
 <h2>Nome do Software: <%= @review["software"]["name"] %></h2>
+<h2>Comentários:</h2>
+<%- @review["comments"].each do |comment| %>
+  <p><%= comment["body"] %></p>
+<%- end %>
