@@ -25,9 +25,24 @@ def split_uid(uid):
     _slug = fragments[-1]
     return (_namespace, _type, _slug)
 
+
+def unmarshal_node(node_dict):
+    "Return dictionary with json strings expanded"
+    result = {}
+    for key,value in node_dict.items():
+        effective_value = value
+        if isinstance(value, basestring):
+            try:
+                effective_value = json.loads(value)                    
+            except ValueError:
+                pass
+        result[key] = effective_value
+    return result
+
+
 def get_references_from_input_json(obj):
     refs = []
-    for key,subprop_dict in obj.get("properties", {}).items():
+    for key,subprop_dict in obj.items():
         for subprop_key,value in subprop_dict.items():
             if subprop_key=="$ref":
                 relationship_name = subprop_dict.get("relationship_name","relates")
@@ -68,7 +83,7 @@ def create(obj, namespace, resource_type, slug=None):
 
     if (schema_uid == JSON_SCHEMA_URI) and (resource_type == SCHEMAS_INDEX):
         # The input data is a schema
-        refs = get_references_from_input_json(obj)
+        refs = get_references_from_input_json(obj.get("properties", {}))
         for property_name, relationship_name, node_path in refs:
             ref_ns, ref_type, ref_slug = split_uid(node_path)
             ref_index = graph_db.get_index(neo4j.Node, ref_type)
@@ -96,7 +111,7 @@ def create(obj, namespace, resource_type, slug=None):
             raise Exception("Inconsistency in Database. More than one schema defined for {0}".format(schema_uid))
 
         schema_obj = search_response[u'hits'][u'hits'][0]['_source']
-        obj_refs = get_references_from_input_json(schema_obj)
+        obj_refs = get_references_from_input_json(schema_obj.get("properties", {}))
         for property_name, relationship_name, node_path in obj_refs:
             ref_ns, ref_type, ref_slug = split_uid(obj[property_name])
             referred_index = graph_db.get_index(neo4j.Node, ref_type)
@@ -106,6 +121,35 @@ def create(obj, namespace, resource_type, slug=None):
             pivot_node.create_relationship_to(referred_node, relationship_name)
 
     return uid
+
+
+def retrieve(namespace, resource_type, resource_id):
+    # Obtain instance from type + slug
+    instance_index = graph_db.get_index(neo4j.Node, resource_type)
+    instance_nodes = instance_index.get("slug", resource_id)
+    # FIXME: generate error if more than one instance is found
+    instance_node = instance_nodes[0]
+    instance_obj = unmarshal_node(instance_node.get_properties())
+    
+    # Obtain schema from given instance
+    # FIXME: generate error if more than one schema is retrieved from describedby
+    schema_node = instance_node.get_related_nodes(0,"describedby")[0]
+    prop_str = schema_node.get_properties()["properties"]
+    schema_properties = json.loads(prop_str)
+    refs = get_references_from_input_json(schema_properties)
+    for key, relationship_name, value in refs:
+        related_nodes = instance_node.get_related_nodes(0, relationship_name)
+        values = []
+        for related_node in related_nodes:
+            values.append(unmarshal_node(related_node.get_properties()))
+        if len(values)==1:
+            instance_obj[key] = values[0]
+        else:
+            instance_obj[key] = values
+    return instance_obj
+
+    #object_in_es = txt_search_db.get(namespace, resource_type, resource_id)
+    #return object_in_es['_source']
 
 
 def update(obj, namespace, resource_type, resource_id):
@@ -124,10 +168,6 @@ def create_or_update(obj, namespace, resource_type, resource_id):
         update(obj, namespace, resource_type, resource_id )
     else:
         create(obj, namespace, resource_type, resource_id)
-
-def retrieve(namespace, resource_type, resource_id):
-    object_in_es = txt_search_db.get(namespace, resource_type, resource_id)
-    return object_in_es['_source'] 
 
 
 def delete(namespace, resource_type, resource_id):
