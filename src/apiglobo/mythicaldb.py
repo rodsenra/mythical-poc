@@ -135,21 +135,23 @@ def retrieve(namespace, resource_type, resource_id):
     instance_node = instance_nodes[0]
     instance_obj = unmarshal_node(instance_node.get_properties())
     
-    # Obtain schema from given instance
-    # FIXME: generate error if more than one schema is retrieved from describedby
-    schema_node = instance_node.get_related_nodes(0,"describedby")[0]
-    prop_str = schema_node.get_properties()["properties"]
-    schema_properties = json.loads(prop_str)
-    refs = get_references_from_input_json(schema_properties)
-    for key, relationship_name, value in refs:
-        related_nodes = instance_node.get_related_nodes(0, relationship_name)
-        values = []
-        for related_node in related_nodes:
-            values.append(unmarshal_node(related_node.get_properties()))
-        if len(values)==1:
-            instance_obj[key] = values[0]
-        else:
-            instance_obj[key] = values
+    if instance_obj.get('$schema') != JSON_SCHEMA_URI:
+        # Obtain schema from given instance
+        # FIXME: generate error if more than one schema is retrieved from describedby
+        schema_node = instance_node.get_related_nodes(0,"describedby")[0]
+        prop_str = schema_node.get_properties()["properties"]
+        schema_properties = json.loads(prop_str)
+        refs = get_references_from_input_json(schema_properties)
+        for key, relationship_name, value in refs:
+            related_nodes = instance_node.get_related_nodes(0, relationship_name)
+            values = []
+            for related_node in related_nodes:
+                values.append(unmarshal_node(related_node.get_properties()))
+            if len(values)==1:
+                instance_obj[key] = values[0]
+            else:
+                instance_obj[key] = values
+
     return instance_obj
 
     #object_in_es = txt_search_db.get(namespace, resource_type, resource_id)
