@@ -18,7 +18,8 @@
         },
         "context": {
             "required": true,
-            "relationship_name": "has_context"
+            "relationship_name": "has_context",
+            "$ref": "/data/schemas/review"
         }
     }
 }

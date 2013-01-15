@@ -10,6 +10,13 @@
         "description": {
             "type": "string",
             "title": "Description"
+        },
+        "category": {
+            "required": true,
+            "type": "object",
+            "relationship_name": "in_category",
+            "$ref": "/data/schemas/software_category"
         }
+        
     }
 }

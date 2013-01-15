@@ -14,6 +14,7 @@
         },
         "comments": {
             "required": false,
+            "type": "array",
             "relationship_name": "has_context",
             "$ref": "/data/schemas/comment"
         }

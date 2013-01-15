@@ -116,7 +116,7 @@ def create(obj, namespace, resource_type, slug=None):
         obj_refs = get_references_from_input_json(schema_obj.get("properties", {}))
         for property_name, relationship_name, node_path in obj_refs:
             property_value = obj.get(property_name)
-            if property_value is not None:
+            if property_value:
                 ref_ns, ref_type, ref_slug = split_uid(property_value)
                 referred_index = graph_db.get_index(neo4j.Node, ref_type)
                 referred_nodes = referred_index.get("slug", ref_slug)
