@@ -21,6 +21,6 @@ def healthcheck():
     return "ok"
 
 if __name__ == '__main__':
-    # app.register_blueprint(data.data_blueprint)
+    app.register_blueprint(data.data_blueprint)
     app.run(host=app.config['SERVER_HOST'], port=app.config['SERVER_PORT'])
 
