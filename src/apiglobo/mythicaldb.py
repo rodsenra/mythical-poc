@@ -44,7 +44,7 @@ def get_references_from_input_json(obj):
     refs = []
     for key,subprop_dict in obj.items():
         for subprop_key,value in subprop_dict.items():
-            if subprop_key=="relationship_name":
+            if subprop_key=="$ref":
                 relationship_name = subprop_dict.get("relationship_name","relates")
                 refs.append((key, relationship_name, value))
     return refs
@@ -85,7 +85,8 @@ def create(obj, namespace, resource_type, slug=None):
         # The input data is a schema
         refs = get_references_from_input_json(obj.get("properties", {}))
         for property_name, relationship_name, node_path in refs:
-            ref_ns, ref_type, ref_slug = split_uid(node_path)
+            values = split_uid(node_path)
+            ref_ns, ref_type, ref_slug = values
             ref_index = graph_db.get_index(neo4j.Node, ref_type)
             referred_nodes = ref_index.get("slug", ref_slug)
             for referred_node in referred_nodes: 
