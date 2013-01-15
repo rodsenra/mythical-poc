@@ -22,15 +22,13 @@ def wipeout_armageddon():
     requests.post('http://localhost:7474/db/data/cypher', data='{"query": "start no=node(*) delete no"}', headers=headers)
     requests.delete('http://localhost:9200/data')
 
-
-def load():
-    # Load schemas
+def load_schemas():
     print("Load schemas")
     requests.put('http://localhost:5100/data/schemas/software', data=load_string('software_schema.json'), headers=headers)
     requests.put('http://localhost:5100/data/schemas/review', data=load_string('review_schema.json'), headers=headers)
     requests.put('http://localhost:5100/data/schemas/comment', data=load_string('comment_schema.json'), headers=headers)
-
-    # Load instances
+    
+def load_instances():
 
     ## Software
     print("Load instances")
@@ -58,7 +56,23 @@ def load():
     comment2_uid = response.headers['Location']
     print("Comment2 instance " + comment2_uid)
 
+    return ['softwares/%s' % software_uid, 
+            'reviews/%s' % review_uid, 
+            'comments/%s' % comment1_uid,
+            'comments/%s' % comment2_uid]
+
+
+def retrieve_data(path_name):
+    response = requests.get('http://localhost:5100/data/{0}'.format(path_name), headers=headers)
+    print("Retrieve {0}".format(path_name))
+    print(response.json())
 
 if __name__ == '__main__':
     wipeout_armageddon()
-    load()
+    load_schemas()
+    paths = load_instances()
+    retrieve_data('schemas/software')
+    retrieve_data('schemas/review')
+    retrieve_data('schemas/comment')
+    #for p in paths:
+    #    retrieve_data(p)

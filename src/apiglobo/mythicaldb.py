@@ -67,6 +67,7 @@ def create(obj, namespace, resource_type, slug=None):
     record = txt_search_db.index(namespace, resource_type, obj, id=slug)
     if not record['ok']:
         raise MythicalDBException("Failed to index record {0:s} in ElasticSearch.".format(obj))
+    txt_search_db.refresh(namespace)
     
     # Neo4J does not accept nested properties
     # We have chosen to embed the data structure as a json string instead
