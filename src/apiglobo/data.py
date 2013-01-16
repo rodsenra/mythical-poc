@@ -53,6 +53,8 @@ def filter_data(type_name):
 @crossdomain(origin='*')
 def retrieve(type_name, doc_slug):
     doc = mythicaldb.retrieve(NAMESPACE, type_name, doc_slug)
+    if doc is None:
+        abort(404)
     response = jsonify(doc)
     response.status_code = 200
     return response

@@ -94,6 +94,9 @@ Query using Cypher
 ------------------
   curl -i -X GET  "http://localhost:5100/data/query/cypher" -H "Content-type: application/json" -T cypher_query.json
 
+Query using Gremlin
+-------------------
+  curl -i -X GET  "http://localhost:5100/data/query/gremlin" -H "Content-type: application/json" -d "g.v(37).map()"
 
 Clean-up ElasticSearch
 ----------------------
