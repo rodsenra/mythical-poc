@@ -62,15 +62,24 @@ def retrieve(type_name, doc_slug):
 @crossdomain(origin='*')
 def list_supported_query_languages():
     languages_json = {
-        "cypher": "{0}{1}".format(request.url_root, "data/query/cypher")
+        "cypher": "{0}{1}".format(request.url_root, "data/query/cypher"),
+        "gremlin": "{0}{1}".format(request.url_root, "data/query/gremlin")
     }
     return jsonify(languages_json)
+
 
 @data_blueprint.route("/data/query/cypher", methods=['GET'])
 @crossdomain(origin='*')
 def query_using_cypher():
     response = mythicaldb.graph_query("cypher", request.data)
     return response
+
+
+@data_blueprint.route("/data/query/gremlin", methods=['GET'])
+@crossdomain(origin='*')
+def query_using_gremlin():
+    response = mythicaldb.graph_query("gremlin", request.data)
+    return jsonify(response)
 
 
 @data_blueprint.route("/data", methods=['GET'])

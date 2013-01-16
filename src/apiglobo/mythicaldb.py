@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 import uuid
 import json
+import py2neo
 import requests
-from py2neo import neo4j, cypher
+from py2neo import neo4j, cypher, gremlin
 from pyelasticsearch import ElasticSearch
 
 from apiglobo import settings
@@ -103,7 +104,7 @@ def create(obj, namespace, resource_type, slug=None):
         schemas_index = graph_db.get_index(neo4j.Node, SCHEMAS_INDEX)
         schema_nodes = schemas_index.get("slug", schema_slug)
         schema_node = schema_nodes[0]  # highlander - there should be only one!
-        pivot_node.create_relationship_to(schema_node, 'describedby')
+        edge_schema = pivot_node.create_relationship_to(schema_node, 'describedby')
             
         # Create relation between instance and referred instances
         # There is a premise here that the only schema type will be JSON_SCHEMA_URI
@@ -155,6 +156,9 @@ def retrieve(namespace, resource_type, resource_id):
             else:
                 instance_obj[key] = values
 
+        # incorporate incoming relationships        
+        #instance_node.get_relationships(neo4j.Direction.INCOMING)
+        
     return instance_obj
 
     #object_in_es = txt_search_db.get(namespace, resource_type, resource_id)
@@ -189,9 +193,11 @@ def search(text, namespace=None, resource_type=None):
     return txt_search_db.search(text, doc_type=resource_type, index=namespace)
 
 
-def graph_query(language, json_query):
+def graph_query(language, data_payload):
     if language == "cypher":
         headers = {'Content-type': 'application/json'}
-        response = requests.post('http://localhost:7474/db/data/cypher', data=json_query, headers=headers)
-
-    return response.text
+        response = requests.post('http://localhost:7474/db/data/cypher', data=data_payload, headers=headers)
+        return response.text
+    elif language == "gremlin":
+        response = gremlin.execute(data_payload, graph_db)
+        return {"response" : response}
