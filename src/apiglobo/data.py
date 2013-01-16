@@ -70,7 +70,7 @@ def list_supported_query_languages():
 @crossdomain(origin='*')
 def query_using_cypher():
     response = mythicaldb.graph_query("cypher", request.data)
-    return jsonify(response)
+    return response
 
 
 @data_blueprint.route("/data", methods=['GET'])
