@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 import uuid
 import json
-from py2neo import neo4j
+import requests
+from py2neo import neo4j, cypher
 from pyelasticsearch import ElasticSearch
+
 from apiglobo import settings
 
 DEFAULT_NAMESPACE = "data"
@@ -185,3 +187,11 @@ def delete(namespace, resource_type, resource_id):
 
 def search(text, namespace=None, resource_type=None):
     return txt_search_db.search(text, doc_type=resource_type, index=namespace)
+
+
+def graph_query(language, json_query):
+    if language == "cypher":
+        headers = {'Content-type': 'application/json'}
+        response = requests.post('http://localhost:7474/db/data/cypher', data=json_query, headers=headers)
+
+    return response

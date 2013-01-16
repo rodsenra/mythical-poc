@@ -1,0 +1,4 @@
+{
+    "query": "START r=node:reviews(\"slug:*\") MATCH r-[:revises]->()-[:in_category]->c, m-[:has_context]->r  WHERE c.slug= \"\\\"SO\\\"\" RETURN r, count(m)  ORDER BY count(m) DESC;",
+    "params": {}
+}

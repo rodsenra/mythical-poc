@@ -111,6 +111,10 @@ Clean-up Neo4j
   start no=node(*) delete no;
 
 
+Query using Cypher
+------------------
+  curl -i -X GET  'http://localhost:5100/data/query/cypher' -H 'Content-type: application/cypher' -T data/cypher_query.json
+
 
 Deprecated
 ==========
