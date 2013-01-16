@@ -72,9 +72,19 @@ cd ./jsonform/
 
 python -m SimpleHTTPServer
 
+
+
+Add Data
+--------
 curl -i -XPUT  'http://localhost:5100/data/schemas/software' -H 'Content-type: application/json' -T software_schema.json
 curl -i -XPUT  'http://localhost:5100/data/schemas/review' -H 'Content-type: application/json' -T review_schema.json
 curl -i -XPOST  'http://localhost:5100/data/softwares' -H 'Content-type: application/json' -T software_instance.json
+
+List supported query languages
+------------------------------
+
+curl -i -XGET 'http://localhost:5100/data/query'
+
 
 HTTP/1.0 201 CREATED
 Content-Type: text/html; charset=utf-8
@@ -91,14 +101,15 @@ Clean-up ElasticSearch
 ----------------------
   curl -X DELETE http://localhost:9200/data
 
+Query ES
+--------
+  curl -XGET 'http://localhost:9200/data/_search?q=uid:"/data/schemas/software"&pretty=true'
+
 Clean-up Neo4j
 --------------
   start no=relationship(*) delete no;
   start no=node(*) delete no;
 
-Query ES
---------
-  curl -XGET 'http://localhost:9200/data/_search?q=uid:"/data/schemas/software"&pretty=true'
 
 
 Deprecated

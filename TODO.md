@@ -8,7 +8,8 @@ TODO
 ---
 
 1. Consultas
-  - review de 1 dada categoria ordenada por contagem de cometários
+  ✓ review de 1 dada categoria ordenada por contagem de cometários
+  ✓ listagem de lingaugens de query suportadas 
   - consulta textual restrita a um tipo
   - dado comentário recuperar caminho de comments até review
   - dado software obter todos reviews
