@@ -194,4 +194,4 @@ def graph_query(language, json_query):
         headers = {'Content-type': 'application/json'}
         response = requests.post('http://localhost:7474/db/data/cypher', data=json_query, headers=headers)
 
-    return response
+    return response.text
