@@ -80,22 +80,20 @@ curl -i -XPUT  'http://localhost:5100/data/schemas/software' -H 'Content-type: a
 curl -i -XPUT  'http://localhost:5100/data/schemas/review' -H 'Content-type: application/json' -T review_schema.json
 curl -i -XPOST  'http://localhost:5100/data/softwares' -H 'Content-type: application/json' -T software_instance.json
 
+Query textual data
+------------------
+curl -i -X GET "http://localhost:5100/data/reviews?q=\"windows\""
+
 List supported query languages
 ------------------------------
 
 curl -i -XGET 'http://localhost:5100/data/query'
 
 
-HTTP/1.0 201 CREATED
-Content-Type: text/html; charset=utf-8
-Location: http://localhost:5100/data/schema/review_schema
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Methods: PUT, HEAD, OPTIONS, GET
-Access-Control-Max-Age: 21600
-Content-Length: 0
-Server: Werkzeug/0.8.3 Python/2.7.1
-Date: Thu, 10 Jan 2013 18:03:30 GMT
+Query using Cypher
+------------------
+  curl -i -X GET  "http://localhost:5100/data/query/cypher" -H "Content-type: application/json" -T cypher_query.json
+
 
 Clean-up ElasticSearch
 ----------------------
@@ -109,11 +107,6 @@ Clean-up Neo4j
 --------------
   start no=relationship(*) delete no;
   start no=node(*) delete no;
-
-
-Query using Cypher
-------------------
-  curl -i -X GET  'http://localhost:5100/data/query/cypher' -H 'Content-type: application/cypher' -T data/cypher_query.json
 
 
 Deprecated

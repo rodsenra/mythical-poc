@@ -107,6 +107,16 @@ def load_instances():
     comment2_json = load_json('comment2_win8_instance.json')
     comment2_json['context'] = review_uid_win8
     comment2_json['reply'] = comment1_uid
+    comment2_json['body'] = 'Oi tudo bem?'
+    response = requests.post('http://localhost:5100/data/comments', data=json.dumps(comment2_json), headers=headers)
+    comment2_uid = response.headers['Location']
+    print("Comment2 instance " + comment2_uid)
+    instances.append(comment2_uid)
+
+    comment2_json = load_json('comment2_win8_instance.json')
+    comment2_json['context'] = review_uid_win8
+    comment2_json['reply'] = comment2_uid
+    comment2_json['body'] = 'Belex'
     response = requests.post('http://localhost:5100/data/comments', data=json.dumps(comment2_json), headers=headers)
     comment2_uid = response.headers['Location']
     print("Comment2 instance " + comment2_uid)
