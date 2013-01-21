@@ -1,0 +1,23 @@
+{
+  "@context": {
+        "owl": "http://www.w3.org/2002/07/owl#", 
+        "xsd": "http://www.w3.org/2001/XMLSchema#", 
+        "sw": "http://semantica.globo.com/software/",
+        "rdfs:label": "Software",
+        "sw:name": {
+            "@type":      "xsd:string",
+            "rdfs:label": "Name"
+        },
+        "sw:description": {
+            "@type":      "xsd:string",
+            "rdfs:label": "Description"
+        },
+        "sw:in_category": {
+            "@id": "sw:SoftwareCategory",
+            "@type": "@id",
+            "rdfs:label": "category"
+        }
+  },
+  "@id": "sw:Software",
+  "@type": "@id"
+}

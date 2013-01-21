@@ -6,6 +6,7 @@ import py2neo
 import requests
 from py2neo import neo4j, cypher, gremlin
 from pyelasticsearch import ElasticSearch
+from SPARQLWrapper import SPARQLWrapper
 
 from apiglobo import settings
 
@@ -16,7 +17,7 @@ SCHEMAS_INDEX = 'schemas'
 
 txt_search_db = ElasticSearch(settings.ES_ENDPOINT)
 graph_db = neo4j.GraphDatabaseService(settings.NEO4J_ENDPOINT)
-
+sparql_db = SPARQLWrapper(settings.SPARQL_ENDPOINT_AUTH)
 
 class MythicalDBException(Exception):
     pass

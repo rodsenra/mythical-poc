@@ -111,6 +111,10 @@ Clean-up Neo4j
   start no=relationship(*) delete no;
   start no=node(*) delete no;
 
+Setup before using Virtuoso
+---------------------------
+  create graph <http://mythical_poc.globo.com>
+
 
 Deprecated
 ==========

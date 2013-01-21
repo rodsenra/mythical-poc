@@ -9,10 +9,18 @@ TODO
 
 1. Consultas
   ✓ review de 1 dada categoria ordenada por contagem de cometários
-  ✓ listagem de lingaugens de query suportadas 
+  
+      START r=node:reviews("slug:*") 
+      MATCH r-[:revises]->()-[:in_category]->c, m-[:has_context]->r  
+      WHERE c.slug="\"SO\"" 
+      RETURN r,count(m) 
+      ORDER BY count(m) DESC;
+  
+  ✓ listagem de linguagens de query suportadas 
   ✓ consulta textual restrita a um tipo
   ✓ dado comentário recuperar caminho de comments até review
      start n=node(44) match n-[:replies*]->t-[:has_context]->x return  n, t, x;
+  
   ✓ dado software obter todos reviews
      g.v(18).inE.filter{it.label=="revises"}.outV.map
      start n=node(18) match n<-[:revises]-x return x;
@@ -34,3 +42,7 @@ TODO
    - embeded vs linked daat structures
    - representar incoming + outgoing links
 
+Idéias sobre a API de Dados
+===========================
+   - Devem existir namespaces, de forma que os dados/esquemas sejam definidos no contexto destes namespaces
+   - JSON é formato básico de representação de dados
