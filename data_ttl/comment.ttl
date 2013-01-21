@@ -1,0 +1,26 @@
+@prefix : <http://semantica.globo.com/feedback/> .  
+@prefix sw: <http://semantica.globo.com/software/> .  
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .      
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# http://semantica.globo.com/feedback/Comment
+:Comment a owl:Class ;
+         rdfs:label "Comment"@en ;
+         rdfs:label "Comentário"@pt .
+
+# http://semantica.globo.com/feedback/comment_body
+:comment_body a owl:ObjectProperty ;
+              rdfs:label "Corpo do comentário"@pt ;
+              rdfs:label "Comments Body"@en ;
+              rdfs:domain :Comment;
+              rdfs:range xsd:string ;
+              rdfs:comment "Corpo do comentário"@pt .
+
+# http://semantica.globo.com/feedback/has_comment
+:has_comment a owl:ObjectProperty ;
+             rdfs:label "Comenta"@pt ;
+             rdfs:label "Comments"@en ;
+             rdfs:domain sw:SoftwareReview;
+             rdfs:range :Comment ;
+             rdfs:comment "Comentário de internauta sobre Review de Software"@pt .

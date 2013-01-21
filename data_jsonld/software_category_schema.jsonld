@@ -1,0 +1,27 @@
+{
+    "@context": {
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "sw": "http://semantica.globo.com/software/",
+        "rdfs:label": "Software Category",
+        "owl:subClassOf": {  "rdf:type": "owl:Restriction", 
+                             "owl:onProperty": "sw:has_items",
+                             "owl:minQualifiedCardinality": {"value": "1", 
+                                                             "@type": "xsd:nonNegativeInteger" },
+                             "owl:allValuesFrom": "xsd:string"
+                          },
+
+        "sw:name": {
+            "@type":      "xsd:string",
+            "rdfs:label": "Name"
+        },
+        "sw:has_items": {
+            "@id":        "sw:Software",
+            "@type":      "@id",
+            "rdfs:label": "items"
+        }
+    },
+    "@id": "sw:SoftwareCategory",
+    "@type": "@id"
+}
