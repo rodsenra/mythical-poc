@@ -2,10 +2,10 @@ Flask==0.9
 py2neo==1.4.6
 gunicorn==0.14.6
 requests==0.14.0
-SPARQLWrapper==1.5.0-authdigest
 python-dateutil==2.1
-rdflib==3.2.3
-rdfextras==0.3
+rdflib
+rdfextras
+-e git+https://github.com/RDFLib/rdflib-rdfjson.git#egg=rdfjson
 -e git+https://github.com/rhec/pyelasticsearch.git#egg=pyelasticsearch
 -e git+https://github.com/rodsenra/werkzeug.git#egg=werkzeug
 --extra-index-url=http://pypi.globoi.com/simple/

@@ -8,32 +8,29 @@ from apiglobo.mythicaldb import DEFAULT_NAMESPACE as NAMESPACE
 data_blueprint = Blueprint('data_blueprint', __name__)
 
 def primary_validation():
-    try:
-        request.json['$schema']
-    except KeyError:
-        abort(400)
-
-@data_blueprint.route("/data/<type_name>", methods=['POST', 'OPTIONS'])
+    pass
+    
+@data_blueprint.route("/data/<ctx>/<type_name>", methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
 def create_data(type_name):
     primary_validation()
-    uid = mythicaldb.create(request.json, NAMESPACE, type_name)
+    uid = mythicaldb.create(request.data, NAMESPACE, type_name)
     response = Response(status=201)
     response.headers['Location'] = uid
     return response
 
 
-@data_blueprint.route("/data/<ctx>/<type_name>/<doc_slug>", methods=['PUT', 'OPTIONS'])
+@data_blueprint.route("/data/<ctx>/<resource_collection>/<slug>", methods=['PUT', 'OPTIONS'])
 @crossdomain(origin='*')
-def create_with_id(type_name, doc_slug):
+def create_with_id(ctx, resource_collection, slug):
     primary_validation()
-    uid = mythicaldb.create_or_update(request.json, NAMESPACE, type_name, doc_slug)
+    uid = mythicaldb.create_or_update(request.data, ctx, resource_collection, slug)
     response = Response(status=201)
     response.headers['Location'] = uid
     return response
 
 
-@data_blueprint.route("/data/<type_name>", methods=['GET'])
+@data_blueprint.route("/data/<ctx>/<type_name>", methods=['GET'])
 @crossdomain(origin='*')
 def filter_data(type_name):
     if request.args:
@@ -49,7 +46,7 @@ def filter_data(type_name):
         abort(404)
 
 
-@data_blueprint.route("/data/<type_name>/<doc_slug>", methods=['GET'])
+@data_blueprint.route("/data/<ctx>/<type_name>/<doc_slug>", methods=['GET'])
 @crossdomain(origin='*')
 def retrieve(type_name, doc_slug):
     doc = mythicaldb.retrieve(NAMESPACE, type_name, doc_slug)

@@ -8,7 +8,32 @@ from py2neo import neo4j, cypher, gremlin
 from pyelasticsearch import ElasticSearch
 from SPARQLWrapper import SPARQLWrapper
 
+from rdflib import Graph, plugin, OWL
+from rdflib.namespace import Namespace, NamespaceManager
+from rdflib.parser import Parser
+from rdflib.serializer import Serializer
+
 from apiglobo import settings
+
+BASE_URL = 'http://semantica.globo.com'
+
+def new_namespace_manager(context, collection_name):
+    namespace_manager = NamespaceManager(Graph())
+    namespace_manager.bind(None, "/".join((BASE_URL, context, collection_name))+"/", override=False)
+    namespace_manager.bind('up', Namespace('http://semantica.globo.com/upper/'), override=False)
+    namespace_manager.bind('owl', Namespace('http://www.w3.org/2002/07/owl#'), override=False)
+    namespace_manager.bind('xsd', Namespace('http://www.w3.org/2001/XMLSchema#'), override=False)
+    namespace_manager.bind('schema', Namespace('http://schema.org/'), override=False)
+    namespace_manager.bind('dbpedia', Namespace('http://dbpedia.org/ontology/'), override=False)
+    return namespace_manager
+
+def install_namespace(g, context, collection_name):
+    #g.bind('', "/".join((BASE_URL, context, collection_name))+"/", override=False)
+    g.bind('up', Namespace('http://semantica.globo.com/upper/'), override=False)
+    g.bind('owl', Namespace('http://www.w3.org/2002/07/owl#'), override=False)
+    g.bind('xsd', Namespace('http://www.w3.org/2001/XMLSchema#'), override=False)
+    g.bind('schema', Namespace('http://schema.org/'), override=False)
+    g.bind('dbpedia', Namespace('http://dbpedia.org/ontology/'), override=False)
 
 DEFAULT_NAMESPACE = "data"
 
@@ -57,21 +82,37 @@ def get_references_from_graph(node):
     # (key, relationship_name, value))
     pass
 
-def create(obj, namespace, resource_type, slug=None):
-
-    # inject slug into object
-    slug = obj["slug"] = slug or str(uuid.uuid4())
+def create(ttl, context, resource_collection, slug=None):
+    g = Graph(namespace_manager=new_namespace_manager(context, resource_collection))
+    #g.namespace_manager = new_namespace_manager(context, resource_collection)
+    #install_namespace(g, context, resource_collection)
     
+    g.parse(data=ttl, format="n3")
+    
+    # inject slug into object
+    # slug = obj["slug"] = slug or str(uuid.uuid4())
+
     # inject id into object with a common field name
-    uid = obj["uid"] = "/".join(("", namespace, resource_type, slug)) 
+    # uid = obj["uid"] = "/".join(("", namespace, resource_type, slug))
+
+    # Convert notation turtle into json
+    obj = g.serialize(format='rdf-json')
+
+
+    for s, p, o in g:
+        if isinstance(o, rdflib.term.URIRef):
+            # create NODE
+        else:
+            # create Property
     
     # FIXME: implement transaction all-or-nothing to add data to all DBs
 
     # id inside elasticsearch is sufficient to be a slug because it will keep path (considering the ES index)
-    record = txt_search_db.index(namespace, resource_type, obj, id=slug)
+    record = txt_search_db.index(context, resource_collection, obj, id=slug)
     if not record['ok']:
         raise MythicalDBException("Failed to index record {0:s} in ElasticSearch.".format(obj))
-    txt_search_db.refresh(namespace)
+    txt_search_db.refresh(context)
+
     
     # Neo4J does not accept nested properties
     # We have chosen to embed the data structure as a json string instead
@@ -191,20 +232,21 @@ def update(obj, namespace, resource_type, resource_id):
     pass
 
 
-def create_or_update(obj, namespace, resource_type, resource_id):
+def create_or_update(obj, ctx, resource_collection, slug):
     # TODO: think about sync model between backend databases, for the time being assume in sync
     # We assume that optional fields are not present in the input data (json format),
     # if this holds then we should remove non-filled fields
     refered_node = None
-    ref_index = graph_db.get_index(neo4j.Node, resource_type)
+    # FIXME: map the ctx concept to Neo4J
+    ref_index = graph_db.get_index(neo4j.Node, resource_collection)
     
     if ref_index:
-        refered_node = ref_index.get("slug", resource_id)
+        refered_node = ref_index.get("slug", slug)
     
     if refered_node:
-        update(obj, namespace, resource_type, resource_id )
+        update(obj, ctx, resource_collection, slug)
     else:
-        create(obj, namespace, resource_type, resource_id)
+        create(obj, ctx, resource_collection, slug)
 
 
 def delete(namespace, resource_type, resource_id):

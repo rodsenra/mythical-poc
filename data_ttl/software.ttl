@@ -1,23 +1,28 @@
-@prefix : <http://semantica.globo.com/software/> .  
+@prefix : <http://semantica.globo.com/software/schemas/> .
+@prefix up: <http://semantica.globo.com/upper/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .      
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix dbpedia: <http://dbpedia.org/ontology/> .
 
-# http://semantica.globo.com/software/Software
-:Software a owl:Class ;
-          rdfs:label "Software"@en ;
+
+:Software a up:Schema ;
+          owl:subClassOf up:Object,
+                         dbpedia:Work ,
+                         schema:CreativeWork ;
+          owl:equivalentClass schema:SoftwareApplication ;
           rdfs:label "Software"@pt .
 
-# http://semantica.globo.com/software/name
 :name a owl:DatatypeProperty ;
+      owl:subPropertyOf up:name ;
+      owl:equivalentProperty schema:name ;
       rdfs:label "Nome"@pt ;
-      rdfs:label "Name"@en ;
       rdfs:domain :Software ;
-      rdfs:range xsd:string ;
-      rdfs:comment "Rótulo que define o Software"@pt .
+      rdfs:range xsd:string .
 
-# http://semantica.globo.com/software/in_category
 :in_category a  owl:ObjectProperty ;
+             owl:equivalentProperty schema:applicationCategory ;
              owl:inverseOf :has_software ;
              rdfs:domain :Software ;
              rdfs:range :SoftwareCategory .
