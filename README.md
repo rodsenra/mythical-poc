@@ -17,6 +17,8 @@ Requirements for the New Platform
     
   The new architeture should naturally lead to support for mobile apps
 
+  API Requests (80%) should respond below 20ms.
+  
 
 Objectives for this project
 ===========================

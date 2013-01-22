@@ -23,7 +23,7 @@ def create_data(type_name):
     return response
 
 
-@data_blueprint.route("/data/<type_name>/<doc_slug>", methods=['PUT', 'OPTIONS'])
+@data_blueprint.route("/data/<ctx>/<type_name>/<doc_slug>", methods=['PUT', 'OPTIONS'])
 @crossdomain(origin='*')
 def create_with_id(type_name, doc_slug):
     primary_validation()
