@@ -57,7 +57,7 @@ def create_schema(ttl, context, collection, slug=None):
     final_triples = []
     for s,p,o in g:
         final_triples.append(TRIPLE_TEMPLATE % (s.n3(), p.n3(), o.n3()))
-    graph = DEFAULT_GRAPH + "/" + context + "/"
+    graph = DEFAULT_GRAPH  + context + "/"
     query = INSERT_TEMPLATE % (graph, "\n".join(final_triples))
     query_results = query_sparql(query)
     # FIX: verify operation success 
@@ -82,7 +82,7 @@ def create_instance(json_dict, context, collection, slug=None):
         final_triples.append(TRIPLE_TEMPLATE % (_encapsulate(uri).n3(),
                                                 _encapsulate(p).n3(),
                                                 _encapsulate(o).n3()))
-    graph = DEFAULT_GRAPH + "/" + context + "/"
+    graph = DEFAULT_GRAPH  + context + "/"
     query = INSERT_TEMPLATE % (graph, "\n".join(final_triples))
     query_results = query_sparql(query)
     # FIX: verify operation success 
@@ -92,7 +92,7 @@ def create_instance(json_dict, context, collection, slug=None):
 
 def retrieve_instance(context, collection, slug):
     uri = "/".join((BASE_URI, context, collection, slug))
-    graph = DEFAULT_GRAPH + "/" + context + "/"
+    graph = DEFAULT_GRAPH + context + "/"
     query = RETRIEVE_TEMPLATE % (graph, uri)
     query_result = query_sparql(query)
     # FIX: verify operation success 
