@@ -48,3 +48,10 @@ def crossdomain(origin=None, methods=None, headers=None,
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
     return decorator
+
+def split_uid(uid):
+    fragments = uid.split("/")
+    _namespace = fragments[-3]
+    _type = fragments[-2]
+    _slug = fragments[-1]
+    return (_namespace, _type, _slug)
