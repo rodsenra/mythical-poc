@@ -13,8 +13,6 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 
 from apiglobo.settings import *
 
-
-
 DEFAULT_NAMESPACE = "data"
 
 JSON_SCHEMA_URI = "http://json-schema.org/schema"
@@ -53,14 +51,14 @@ select ?property ?value ?nested_property ?nested_value from <%s> {
 } 
 """
 
-    
 def create_schema(ttl, context, collection, slug=None):
     g = Graph() #namespace_manager=new_namespace_manager(context, resource_collection))
     g.parse(data=ttl, format="n3")
     final_triples = []
     for s,p,o in g:
         final_triples.append(TRIPLE_TEMPLATE % (s.n3(), p.n3(), o.n3()))
-    query = INSERT_TEMPLATE % (DEFAULT_GRAPH, "\n".join(final_triples))
+    graph = DEFAULT_GRAPH + "/" + context + "/"
+    query = INSERT_TEMPLATE % (graph, "\n".join(final_triples))
     query_results = query_sparql(query)
     # FIX: verify operation success 
     
@@ -84,8 +82,8 @@ def create_instance(json_dict, context, collection, slug=None):
         final_triples.append(TRIPLE_TEMPLATE % (_encapsulate(uri).n3(),
                                                 _encapsulate(p).n3(),
                                                 _encapsulate(o).n3()))
-
-    query = INSERT_TEMPLATE % (DEFAULT_GRAPH, "\n".join(final_triples))
+    graph = DEFAULT_GRAPH + "/" + context + "/"
+    query = INSERT_TEMPLATE % (graph, "\n".join(final_triples))
     query_results = query_sparql(query)
     # FIX: verify operation success 
         
@@ -94,7 +92,8 @@ def create_instance(json_dict, context, collection, slug=None):
 
 def retrieve_instance(context, collection, slug):
     uri = "/".join((BASE_URI, context, collection, slug))
-    query = RETRIEVE_TEMPLATE % (DEFAULT_GRAPH, uri)
+    graph = DEFAULT_GRAPH + "/" + context + "/"
+    query = RETRIEVE_TEMPLATE % (graph, uri)
     query_result = query_sparql(query)
     # FIX: verify operation success 
     triples = query_result['results']['bindings']
