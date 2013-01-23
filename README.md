@@ -76,12 +76,39 @@ python -m SimpleHTTPServer
 
 Add Data
 --------
+
+Adding data to a semantic database
+--
+
+Bla bla
+
+Adding schemas (i.e. OWL Classes)
+---
+
+lallal
+
+Adding instances (i.e. some individual of a OWL Class)
+---
+
+jisadssjidsa
+
+
+Retrieving data
+------------
+
+LALLALALALAL
+
 ```bash
 curl -i -XPUT  'http://localhost:5100/data/schemas/software' -H 'Content-type: application/json' -T software_schema.json
 ```
 
+```bash
 curl -i -XPUT  'http://localhost:5100/data/schemas/review' -H 'Content-type: application/json' -T review_schema.json
+```
+
+```bash
 curl -i -XPOST  'http://localhost:5100/data/softwares' -H 'Content-type: application/json' -T software_instance.json
+```
 
 Query textual data
 ------------------
