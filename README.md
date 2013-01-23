@@ -9,16 +9,16 @@ Requirements for the New Platform
 =================================
 
   Backend as a Service (BaaS) composed by cloud-based RESTful services: 
-    * unified CMA 
+    * unified CMA
     * uniform access to all enterprise data (CMS,Search, Semantics)
-    * authentication 
+    * authentication
     * authorization
     * billing
-    
+
   The new architeture should naturally lead to support for mobile apps
 
   API Requests (80%) should respond below 20ms.
-  
+
 
 Objectives for this project
 ===========================
@@ -28,7 +28,7 @@ Objectives for this project
     several components of the architecture.
     There is no need for a complete implementation at the end of the project.
     Development of code will be done on-demand to validate concepts.
- 
+
  2) The design of the architecture will define the communication between the teams.
     We should be able to understand which stories are relevant to which teams. 
 
@@ -45,7 +45,6 @@ Data Model
      \- Title
       \- Comments -> Comment
 
-
 References
 ==========
 
@@ -60,13 +59,14 @@ Desired features
 
 Configuration
 =============
- We applied two configurations in ElasticSearch:
-  - elasticsearch/config/default-mapping.json 
-  - elasticsearch/config/elasticsearch.yml
- 
- This files are inside the mythical-poc project tree, below config/elasticsearch. 
- The goal of the configuration is to define that "uid" field always has exact match.
- 
+
+We applied two configurations in ElasticSearch:
+ - elasticsearch/config/default-mapping.json 
+ - elasticsearch/config/elasticsearch.yml
+
+This files are inside the mythical-poc project tree, below config/elasticsearch. 
+The goal of the configuration is to define that "uid" field always has exact match.
+
 Execution
 =========
 
@@ -74,11 +74,12 @@ cd ./jsonform/
 
 python -m SimpleHTTPServer
 
-
-
 Add Data
 --------
+```bash
 curl -i -XPUT  'http://localhost:5100/data/schemas/software' -H 'Content-type: application/json' -T software_schema.json
+```
+
 curl -i -XPUT  'http://localhost:5100/data/schemas/review' -H 'Content-type: application/json' -T review_schema.json
 curl -i -XPOST  'http://localhost:5100/data/softwares' -H 'Content-type: application/json' -T software_instance.json
 
