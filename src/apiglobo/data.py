@@ -15,18 +15,19 @@ def list():
     # list all contexts and operations
     raise NotImplemented
 
-@data_blueprint.route("/data/<ctx>/schemas", methods=['POST', 'OPTIONS'])
-@crossdomain(origin='*')
-def create_schema(ctx):
-    pass
+# This case (should NEVER)  happen
+#@data_blueprint.route("/data/<ctx>/schemas", methods=['POST', 'OPTIONS'])
+#@crossdomain(origin='*')
+#def create_schema(ctx):
+#    pass
 
 @data_blueprint.route("/data/<ctx>/schemas/<slug>", methods=['PUT', 'OPTIONS'])
 @crossdomain(origin='*')
 def create_schema_with_slug(ctx, slug):
     primary_validation()
-    uid = mythicaldb.create_schema(request.data, ctx, "schemas", slug)
+    uri = mythicaldb.create_schema(request.data, ctx, "schemas", slug)
     response = Response(status=201)
-    response.headers['Location'] = uid
+    response.headers['Location'] = uri
     return response
 
 @data_blueprint.route("/data/<ctx>/schemas", methods=['GET', 'OPTIONS'])
@@ -42,7 +43,11 @@ def retrieve_schema(ctx, slug):
 @data_blueprint.route("/data/<ctx>/<collection>", methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
 def create_instance(ctx, collection):
-    pass
+    primary_validation()
+    uri = mythicaldb.create_instance(request.json, ctx, collection)
+    response = Response(status=201)
+    response.headers['Location'] = uri
+    return response
 
 @data_blueprint.route("/data/<ctx>/<collection>/<slug>", methods=['PUT', 'OPTIONS'])
 @crossdomain(origin='*')
@@ -57,7 +62,9 @@ def list_instances(ctx, collection):
 @data_blueprint.route("/data/<ctx>/<collection>/<slug>", methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def retrieve_instance(ctx, collection, slug):
-    pass
+    primary_validation()
+    json_dict = mythicaldb.retrieve_instance(ctx, collection, slug)
+    return jsonify(json_dict)
 
 
 @data_blueprint.route("/data/query", methods=['GET'])

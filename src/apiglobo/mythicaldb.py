@@ -5,7 +5,7 @@ import json
 
 import requests
 import rdflib
-from rdflib import Graph, plugin, OWL
+from rdflib import Graph, plugin, OWL, URIRef, Literal
 from rdflib.namespace import Namespace, NamespaceManager
 from rdflib.parser import Parser
 from rdflib.serializer import Serializer
@@ -41,7 +41,19 @@ INSERT DATA INTO <%s> {
   %s
 }
 """
+RETRIEVE_TEMPLATE = """
+select ?property ?value ?nested_property ?nested_value from <%s> {
+  <%s> ?property ?value .
+  ?s ?property ?value .
+  OPTIONAL {  
+   ?property rdfs:range ?range_p .
+   ?value a ?range_p .
+   ?value ?nested_property ?nested_value .
+ }
+} 
+"""
 
+    
 def create_schema(ttl, context, collection, slug=None):
     g = Graph() #namespace_manager=new_namespace_manager(context, resource_collection))
     g.parse(data=ttl, format="n3")
@@ -56,16 +68,58 @@ def create_schema(ttl, context, collection, slug=None):
     uri = "/".join((BASE_URI, context, collection, slug))
     return uri
 
+def _encapsulate(value):
+    if value.startswith('http'): # FIXME: use regexp to detect URL instead of this
+        result = URIRef(value)
+    else:
+        result = Literal(value)
+    return result
 
-    # inject slug into object
-    # slug = obj["slug"] = slug or str(uuid.uuid4())
+def create_instance(json_dict, context, collection, slug=None):
+    slug =  slug or str(uuid.uuid4())
+    uri = "/".join((BASE_URI, context, collection, slug))
+    # FIXME: handle non-flat JSONS ?? Think about this!
+    final_triples = []
+    for p, o in json_dict.items():
+        final_triples.append(TRIPLE_TEMPLATE % (_encapsulate(uri).n3(),
+                                                _encapsulate(p).n3(),
+                                                _encapsulate(o).n3()))
 
-    # inject id into object with a common field name
-    # uid = obj["uid"] = "/".join(("", namespace, resource_type, slug))
+    query = INSERT_TEMPLATE % (DEFAULT_GRAPH, "\n".join(final_triples))
+    query_results = query_sparql(query)
+    # FIX: verify operation success 
+        
+    return uri
+
+
+def retrieve_instance(context, collection, slug):
+    uri = "/".join((BASE_URI, context, collection, slug))
+    query = RETRIEVE_TEMPLATE % (DEFAULT_GRAPH, uri)
+    query_result = query_sparql(query)
+    # FIX: verify operation success 
+    triples = query_result['results']['bindings']
+    result = {}
+    for row in triples:
+        key = row['property']['value']
+        if 'nested_property' not in row:
+            result[key] = row['value']['value']              
+        else:
+            if key not in result:
+                result[key] = {}
+            nested_key =  row['nested_property']['value']
+            result[key][nested_key] = row['nested_value']['value']
+
+
+    return result
+# FIXME: implement transaction all-or-nothing to add data to all DBs
 
 
 
-    # FIXME: implement transaction all-or-nothing to add data to all DBs
+
+
+
+
+
 
 
 def retrieve(namespace, resource_type, resource_id):
