@@ -22,12 +22,12 @@
               rdfs:range xsd:string .
 
 :comments a owl:ObjectProperty ;
-             owl:inverseOf :has_comment ;
-             rdfs:label "Comenta"@pt ;
-             rdfs:domain :Comment ;
-             rdfs:range  :SoftwareReview .
+          rdfs:label "Comenta"@pt ;
+          rdfs:domain :Comment ;
+          rdfs:range  :SoftwareReview .
 
 :has_comment a owl:ObjectProperty ;
+             owl:inverseOf :comments ;
              rdfs:label "Comenta"@pt ;
              rdfs:domain :SoftwareReview;
              rdfs:range :Comment .

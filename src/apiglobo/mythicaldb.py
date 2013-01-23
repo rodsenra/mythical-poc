@@ -45,7 +45,7 @@ RETRIEVE_TEMPLATE = """
 select ?property ?value ?nested_property ?nested_value from <%s> {
   <%s> ?property ?value .
   ?s ?property ?value .
-  OPTIONAL {  
+  OPTIONAL {
    ?property rdfs:range ?range_p .
    ?value a ?range_p .
    ?value ?nested_property ?nested_value .
@@ -78,31 +78,53 @@ def _encapsulate(value):
 def create_instance(json_dict, context, collection, slug=None):
     slug =  slug or str(uuid.uuid4())
     uri = "/".join((BASE_URI, context, collection, slug))
+
     # FIXME: handle non-flat JSONS ?? Think about this!
     final_triples = []
     for p, o in json_dict.items():
-        final_triples.append(TRIPLE_TEMPLATE % (_encapsulate(uri).n3(),
+       final_triples.append(TRIPLE_TEMPLATE % (_encapsulate(uri).n3(),
                                                 _encapsulate(p).n3(),
                                                 _encapsulate(o).n3()))
+       inv_p = inverse_of(p, context)
+       if inv_p:
+           final_triples.append(_encapsulate(o).n3(), _encapsulate(inv_p).n3(), _encapsulate(uri).n3())
 
     query = INSERT_TEMPLATE % (DEFAULT_GRAPH, "\n".join(final_triples))
-    query_results = query_sparql(query)
-    # FIX: verify operation success 
-        
+    query_sparql(query)
+    # FIXME: verify operation success
     return uri
+
+
+def inverse_of(predicate, context):
+    graph = DEFAULT_GRAPH + context
+
+    query = """
+    SELECT ?inv_prop
+    FROM <%s>
+    WHERE {
+        <%s> owl:inverseOf ?inv_prop
+    }
+    """ % (graph, predicate)
+
+    result = query_sparql(query)
+    triples = result["results"]["bindings"]
+    if triples:
+        return result["value"]["inv_prop"]
+    else:
+        return None
 
 
 def retrieve_instance(context, collection, slug):
     uri = "/".join((BASE_URI, context, collection, slug))
     query = RETRIEVE_TEMPLATE % (DEFAULT_GRAPH, uri)
     query_result = query_sparql(query)
-    # FIX: verify operation success 
+    # FIX: verify operation success
     triples = query_result['results']['bindings']
     result = {}
     for row in triples:
         key = row['property']['value']
         if 'nested_property' not in row:
-            result[key] = row['value']['value']              
+            result[key] = row['value']['value']
         else:
             if key not in result:
                 result[key] = {}
@@ -111,16 +133,8 @@ def retrieve_instance(context, collection, slug):
 
 
     return result
+
 # FIXME: implement transaction all-or-nothing to add data to all DBs
-
-
-
-
-
-
-
-
-
 
 def retrieve(namespace, resource_type, resource_id):
     # Obtain instance from type + slug
@@ -128,11 +142,11 @@ def retrieve(namespace, resource_type, resource_id):
     instance_nodes = instance_index.get("slug", resource_id)
     if not instance_nodes:
         return None
-    
+
     # FIXME: generate error if more than one instance is found
     instance_node = instance_nodes[0]
     instance_obj = unmarshal_node(instance_node.get_properties())
-    
+
     if instance_obj.get('$schema') != JSON_SCHEMA_URI:
         # Obtain schema from given instance
         # FIXME: generate error if more than one schema is retrieved from describedby

@@ -77,17 +77,22 @@ python -m SimpleHTTPServer
 Add Data
 --------
 
-Adding data to a semantic database
+Adding data to a schema-instance database
 --
 
-Bla bla
+In our project, we distinguish adding instances (data) or schema (metadata).
 
-Adding schemas (i.e. OWL Classes)
+Given the difference between classes and individuals in database models like relational
+databases or a triplestore based on OWL, or, in other terms, given that classes are
+first-class citizens in these models, we have two distinct data insertion points to desambiguate
+these two aspects.
+
+Adding schemas
 ---
 
-lallal
 
-Adding instances (i.e. some individual of a OWL Class)
+
+Adding instances
 ---
 
 jisadssjidsa
