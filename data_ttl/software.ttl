@@ -1,4 +1,4 @@
-@prefix : <http://semantica.globo.com/software/schemas/> .
+@prefix : <http://semantica.globo.com/tech/schemas/> .
 @prefix up: <http://semantica.globo.com/upper/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .      
@@ -11,6 +11,7 @@
                          dbpedia:Work ,
                          schema:CreativeWork ;
           owl:equivalentClass schema:SoftwareApplication ;
+          up:collectionName "softwares" ;
           rdfs:label "Software"@pt .
 
 :name a owl:DatatypeProperty ;

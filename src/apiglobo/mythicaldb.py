@@ -13,7 +13,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 
 from apiglobo.settings import *
 
-BASE_URL = 'http://semantica.globo.com'
+
 
 DEFAULT_NAMESPACE = "data"
 
@@ -35,32 +35,37 @@ def query_sparql(query):
 class MythicalDBException(Exception):
     pass
 
-TRIPLE_TEMPLATE ="<%s> <%s> <%s>."
+TRIPLE_TEMPLATE ="%s %s %s."
 INSERT_TEMPLATE = """
 INSERT DATA INTO <%s> {
   %s
 }
 """
 
-def create(ttl, context, resource_collection, slug=None):
+def create_schema(ttl, context, collection, slug=None):
     g = Graph() #namespace_manager=new_namespace_manager(context, resource_collection))
     g.parse(data=ttl, format="n3")
     final_triples = []
     for s,p,o in g:
-        final_triples.append(TRIPLE_TEMPLATE % (s,p, o))
+        final_triples.append(TRIPLE_TEMPLATE % (s.n3(), p.n3(), o.n3()))
     query = INSERT_TEMPLATE % (DEFAULT_GRAPH, "\n".join(final_triples))
-    results = query_sparql(query)
+    query_results = query_sparql(query)
+    # FIX: verify operation success 
     
+    # OBS: URI present in TTL must adhere to the formula below. It must be validated.
+    uri = "/".join((BASE_URI, context, collection, slug))
+    return uri
+
+
     # inject slug into object
     # slug = obj["slug"] = slug or str(uuid.uuid4())
 
     # inject id into object with a common field name
     # uid = obj["uid"] = "/".join(("", namespace, resource_type, slug))
 
-    
-    
+
+
     # FIXME: implement transaction all-or-nothing to add data to all DBs
-    return uid
 
 
 def retrieve(namespace, resource_type, resource_id):

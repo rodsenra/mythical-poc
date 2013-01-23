@@ -1,0 +1,5 @@
+{
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://semantica.globo.com/software/schemas/Software",
+    "http://semantica.globo.com/software/schemas/name": "Windows 8",
+    "http://semantica.globo.com/software/schemas/in_category": "http://semantica.globo.com/software/SoftwareCategory/OperatingSystem"
+}

@@ -9,78 +9,77 @@ data_blueprint = Blueprint('data_blueprint', __name__)
 
 def primary_validation():
     pass
-    
-@data_blueprint.route("/data/<ctx>/<type_name>", methods=['POST', 'OPTIONS'])
+
+@data_blueprint.route("/data", methods=['GET'])
+def list():
+    # list all contexts and operations
+    raise NotImplemented
+
+@data_blueprint.route("/data/<ctx>/schemas", methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
-def create_data(type_name):
+def create_schema(ctx):
+    pass
+
+@data_blueprint.route("/data/<ctx>/schemas/<slug>", methods=['PUT', 'OPTIONS'])
+@crossdomain(origin='*')
+def create_schema_with_slug(ctx, slug):
     primary_validation()
-    uid = mythicaldb.create(request.data, NAMESPACE, type_name)
+    uid = mythicaldb.create_schema(request.data, ctx, "schemas", slug)
     response = Response(status=201)
     response.headers['Location'] = uid
     return response
 
-
-@data_blueprint.route("/data/<ctx>/<resource_collection>/<slug>", methods=['PUT', 'OPTIONS'])
+@data_blueprint.route("/data/<ctx>/schemas", methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
-def create_with_id(ctx, resource_collection, slug):
-    primary_validation()
-    uid = mythicaldb.create_or_update(request.data, ctx, resource_collection, slug)
-    response = Response(status=201)
-    response.headers['Location'] = uid
-    return response
+def list_schemas(ctx):
+    pass
 
-
-@data_blueprint.route("/data/<ctx>/<type_name>", methods=['GET'])
+@data_blueprint.route("/data/<ctx>/schemas/<slug>", methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
-def filter_data(type_name):
-    if request.args:
-        # Convention: if there are args it implies a search
-        results = mythicaldb.search(request.args["q"],
-                                    namespace=NAMESPACE,
-                                    resource_type=type_name)
-        filterd_results_by_type = [dict(item['_source'], **{'id': item['_id']}) for item in results['hits']['hits']]
-        response = jsonify({"results": filterd_results_by_type})
-        response.status_code = 200
-        return response
-    else:
-        abort(404)
+def retrieve_schema(ctx, slug):
+    pass
 
-
-@data_blueprint.route("/data/<ctx>/<type_name>/<doc_slug>", methods=['GET'])
+@data_blueprint.route("/data/<ctx>/<collection>", methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*')
-def retrieve(type_name, doc_slug):
-    doc = mythicaldb.retrieve(NAMESPACE, type_name, doc_slug)
-    if doc is None:
-        abort(404)
-    response = jsonify(doc)
-    response.status_code = 200
-    return response
+def create_instance(ctx, collection):
+    pass
+
+@data_blueprint.route("/data/<ctx>/<collection>/<slug>", methods=['PUT', 'OPTIONS'])
+@crossdomain(origin='*')
+def create_instance_with_slug(ctx, collection, slug):
+    pass
+
+@data_blueprint.route("/data/<ctx>/<collection>", methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
+def list_instances(ctx, collection):
+    pass
+
+@data_blueprint.route("/data/<ctx>/<collection>/<slug>", methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*')
+def retrieve_instance(ctx, collection, slug):
+    pass
 
 
 @data_blueprint.route("/data/query", methods=['GET'])
 @crossdomain(origin='*')
 def list_supported_query_languages():
     languages_json = {
-        "cypher": "{0}{1}".format(request.url_root, "data/query/cypher"),
-        "gremlin": "{0}{1}".format(request.url_root, "data/query/gremlin")
     }
     return jsonify(languages_json)
 
 
-@data_blueprint.route("/data/query/cypher", methods=['GET'])
-@crossdomain(origin='*')
-def query_using_cypher():
-    response = mythicaldb.graph_query("cypher", request.data)
-    return response
 
 
-@data_blueprint.route("/data/query/gremlin", methods=['GET'])
-@crossdomain(origin='*')
-def query_using_gremlin():
-    response = mythicaldb.graph_query("gremlin", request.data)
-    return jsonify(response)
+#    primary_validation()
+#    uid = mythicaldb.create(request.data, NAMESPACE, type_name)
+#    response = Response(status=201)
+#    response.headers['Location'] = uid
+#    return response
+
+#    primary_validation()
+#    uid = mythicaldb.create_or_update(request.data, ctx, resource_collection, slug)
+#    response = Response(status=201)
+#    response.headers['Location'] = uid
+#    return response
 
 
-@data_blueprint.route("/data", methods=['GET'])
-def list():
-    raise NotImplemented

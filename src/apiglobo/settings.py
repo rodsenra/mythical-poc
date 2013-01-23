@@ -11,6 +11,7 @@ SERVER_PORT = 5100
 #NEO4J_ENDPOINT = "http://localhost:7474/db/data/"
 
 DEFAULT_GRAPH = "http://mythical_poc.globo.com/"
+BASE_URI = 'http://semantica.globo.com'
 
 SPARQL_ENDPOINT_REALM = "SPARQL"  # Virtuoso-related
 SPARQL_ENDPOINT_AUTH_MODE = "digest"  # 'basic', ''

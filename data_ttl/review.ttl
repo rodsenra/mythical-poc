@@ -1,20 +1,19 @@
-@prefix : <http://semantica.globo.com/software/> .  
+@prefix : <http://semantica.globo.com/tech/schemas/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .      
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix up: <http://semantica.globo.com/upper/> .
 
 # http://semantica.globo.com/software/SoftwareReview
-:SoftwareReview a owl:Class ;
-                rdfs:label "Software Review"@en ;
+:SoftwareReview a up:Schema ;
+                up:collectionName "reviews" ;
                 rdfs:label "Review de Software"@pt .
 
 # http://semantica.globo.com/software/title
 :title a owl:DatatypeProperty ;
       rdfs:label "Título"@pt ;
-      rdfs:label "Title"@en ;
       rdfs:domain :SoftwareReview ;
-      rdfs:range xsd:string ;
-      rdfs:comment "Rótulo que define o Review de Software"@pt .
+      rdfs:range xsd:string .
 
 # http://semantica.globo.com/software/revises
 :revises a  owl:ObjectProperty ;
