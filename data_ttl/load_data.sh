@@ -1,4 +1,4 @@
-curl -i -X POST http://localhost:8890/sparql-auth?uri="/sparql-auth?default-graph-uri=&query=CLEAR+GRAPH+%3Chttp%3A%2F%2Fmythical_poc.globo.com%2F%3E+&should-sponge=&format=text%2Fhtml&timeout=0&debug=on" --digest --user api-semantica:api-semantica 
+curl -i -X GET http://localhost:8890/sparql-auth?uri="/sparql-auth?default-graph-uri=&query=CLEAR+GRAPH+%3Chttp%3A%2F%2Fmythical_poc.globo.com%2F%3E+&should-sponge=&format=text%2Fhtml&timeout=0&debug=on" --digest --user api-semantica:api-semantica 
 
 curl -i -X PUT http://localhost:5100/data/tech/schemas/SoftwareCategory -T "software_category.ttl" 
 curl -i -X PUT http://localhost:5100/data/tech/schemas/Software -T "software.ttl" 
