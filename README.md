@@ -10,7 +10,7 @@ Requirements for the New Platform
 
   Backend as a Service (BaaS) composed by cloud-based RESTful services: 
     * unified CMA
-    * uniform access to all enterprise data (CMS,Search, Semantics)
+    * uniform access to all enterprise data (CMS, Search, Semantics)
     * authentication
     * authorization
     * billing
@@ -67,6 +67,39 @@ We applied two configurations in ElasticSearch:
 This files are inside the mythical-poc project tree, below config/elasticsearch. 
 The goal of the configuration is to define that "uid" field always has exact match.
 
+Main concepts
+====
+
+Context
+----
+
+An isolated context of data, defined by some unique slug that defines its namespace.
+
+It might represent, for example, the product or the app being developed.
+
+Schema
+---
+
+As most of database models work with a clear distinction between instances (data) and
+schema (metadata), we also make this distinction on the API interface.
+
+Therefore, a *Schema* is a structure that defines the data being stored.
+
+Schemas are defined in the RDF/OWL Model, given its high expressivity and flexibility. Like so,
+it will be possible to represent schemas in different database models or even translations between them
+in a common language.
+
+Likewise, we expect a schema to be easily written, by using the Turtle format, the
+most compact serialization of RDF/OWL models.
+
+Instances
+---
+
+Instances must be easily retrieved and "instance queries" must be really simple
+to developers to understand as they will do way more requests on instances than on schemas. As such,
+the interface for manipulating instances also accept JSON as content_type as most of the APIs in
+the wild do.
+
 Execution
 =========
 
@@ -74,34 +107,31 @@ cd ./jsonform/
 
 python -m SimpleHTTPServer
 
-Add Data
+Getting all data from all contexts
 --------
 
-Adding data to a schema-instance database
---
+*GET* 'http://localhost:5100/data/my_context/schemas/software' -H 'Content-type: application/json'
 
-In our project, we distinguish adding instances (data) or schema (metadata).
-
-Given the difference between classes and individuals in database models like relational
-databases or a triplestore based on OWL, or, in other terms, given that classes are
-first-class citizens in these models, we have two distinct data insertion points to desambiguate
-these two aspects.
+Add Data
+--------
 
 Adding schemas
 ---
 
+```bash
+POST 
+```
 
 
 Adding instances
 ---
 
-jisadssjidsa
-
+```bash
+```
 
 Retrieving data
 ------------
 
-LALLALALALAL
 
 ```bash
 curl -i -XPUT  'http://localhost:5100/data/schemas/software' -H 'Content-type: application/json' -T software_schema.json
