@@ -1,8 +1,8 @@
 <p><%= @review %></p>
 
-<h2>Título do Review: <%= @review["title"] %></h2>
-<h2>Nome do Software: <%= @review["software"]["name"] %></h2>
+<h2>Título do Review: <%= @review["http://semantica.globo.com/tech/schemas/title"] %></h2>
+<h2>Nome do Software: <%= @review["http://semantica.globo.com/tech/schemas/revises"]["http://semantica.globo.com/tech/schemas/name"] %></h2>
 <h2>Comentários:</h2>
-<%- @review["comments"].each do |comment| %>
-  <p><%= comment["body"] %></p>
+<%- @review["http://semantica.globo.com/tech/schemas/has_comment"].each do |comment| %>
+  <p><%= comment["http://semantica.globo.com/tech/schemas/comment_body"] %></p>
 <%- end %>

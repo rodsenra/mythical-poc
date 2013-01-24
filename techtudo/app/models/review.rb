@@ -1,6 +1,6 @@
 class Review
-  def self.find(id)
-    JSON.parse(RestClient.get("http://localhost:5100/data/reviews/#{id}"))
+  def self.find(slug)
+    JSON.parse(RestClient.get("http://localhost:5100/data/tech/reviews/#{slug}"))
   end
   
   def self.search(q)
