@@ -12,6 +12,10 @@ run:
 	@echo "Running server in dev mode..."
 	PYTHONPATH="$(NEW_PYTHONPATH)" python -m apiglobo.server
 
+test:
+	@echo "Running tests..."
+	PYTHONPATH="$(NEW_PYTHONPATH)" python src/apiglobo/test_converter.py
+
 gunicorn:
 	PYTHONPATH="$(NEW_PYTHONPATH)" gunicorn -b 0.0.0.0:5100 --log-level=DEBUG apiglobo.server:app -w 1
 
