@@ -5,7 +5,8 @@ requests==0.14.0
 python-dateutil==2.1
 rdflib
 rdfextras
+SPARQLWrapper==1.5.0-authdigest
 -e git+https://github.com/RDFLib/rdflib-rdfjson.git#egg=rdfjson
 -e git+https://github.com/rhec/pyelasticsearch.git#egg=pyelasticsearch
 -e git+https://github.com/rodsenra/werkzeug.git#egg=werkzeug
---extra-index-url=http://pypi.globoi.com/simple/
+--extra-index-url=http://pypi.globoi.com/
