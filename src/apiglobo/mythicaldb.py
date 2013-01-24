@@ -83,18 +83,22 @@ def create_instance(json_dict, context, collection, slug=None):
        final_triples.append(TRIPLE_TEMPLATE % (_encapsulate(uri).n3(),
                                                 _encapsulate(p).n3(),
                                                 _encapsulate(o).n3()))
-       inv_p = inverse_of(p, context)
-       if inv_p:
-           final_triples.append(_encapsulate(o).n3(), _encapsulate(inv_p).n3(), _encapsulate(uri).n3())
+       inverse_predicates = inverse_of(p, context)
+       if inverse_predicates:
+           for inverse_predicate in inverse_predicates:
+               final_triples.append(TRIPLE_TEMPLATE % (_encapsulate(o).n3(),
+                                                       _encapsulate(inverse_predicate).n3(),
+                                                       _encapsulate(uri).n3()))
 
-    query = INSERT_TEMPLATE % (DEFAULT_GRAPH, "\n".join(final_triples))
+    graph = DEFAULT_GRAPH  + context + "/"
+    query = INSERT_TEMPLATE % (graph, "\n".join(final_triples))
     query_sparql(query)
     # FIXME: verify operation success
     return uri
 
 
 def inverse_of(predicate, context):
-    graph = DEFAULT_GRAPH + context
+    graph = DEFAULT_GRAPH + context + "/"
 
     query = """
     SELECT ?inv_prop
@@ -103,13 +107,13 @@ def inverse_of(predicate, context):
         <%s> owl:inverseOf ?inv_prop
     }
     """ % (graph, predicate)
+    results = []
+    sparql_result = query_sparql(query)
+    triples = sparql_result["results"]["bindings"]
+    for i in triples:
+        results.append(i["inv_prop"]["value"])
 
-    result = query_sparql(query)
-    triples = result["results"]["bindings"]
-    if triples:
-        return result["value"]["inv_prop"]
-    else:
-        return None
+    return results
 
 
 def retrieve_instance(context, collection, slug):

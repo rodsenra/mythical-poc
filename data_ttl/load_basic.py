@@ -2,6 +2,7 @@
 import json
 import requests
 import time
+import sys
 
 headers_ttl = {'Content-type': 'text/turtle'}
 headers = {'Content-type': 'application/json'}
@@ -19,7 +20,7 @@ def load_string(filename):
 
 def wipeout_armageddon():
     print("Clean up databases")
-    requests.get('http://localhost:8890/sparql-auth?uri="/sparql-auth?default-graph-uri=&query=CLEAR+GRAPH+%3Chttp%3A%2F%2Fmythical_poc.globo.com%2F%3E+&should-sponge=&format=text%2Fhtml&timeout=0&debug=on" --digest --user api-semantica:api-semantica')  
+    requests.get('http://localhost:8890/sparql-auth?uri="/sparql-auth?default-graph-uri=&query=CLEAR+GRAPH+%3Chttp%3A%2F%2Fmythical_poc.globo.com%2Ftech%2F%3E&should-sponge=&format=text%2Fhtml&timeout=0&debug=on" --digest --user api-semantica:api-semantica')  
 
 def load_schemas():
     print("Load schemas")
@@ -55,17 +56,27 @@ def load_instances():
     software_dict = load_json('software_instance.json')
     response = requests.post('http://localhost:5100/data/tech/softwares', data=json.dumps(software_dict), headers=headers)
     software_uri = response.headers['Location']
+    if software_uri is None:
+        print("Failed to create software")
+        sys.exit(0)
     print("Software instance " + software_uri)
     instances.append(software_uri)
 
     ## Review
     review_json = load_json('review_win8_instance.json')
     review_json['http://semantica.globo.com/tech/schemas/revises'] = software_uri
-    response = requests.post('http://localhost:5100/data/tech/review', data=json.dumps(review_json), headers=headers)
-    review_uid = response.headers['Location']
-    print("Review instance " + review_uid)
-    instances.append(review_uid)
+    response = requests.post('http://localhost:5100/data/tech/reviews', data=json.dumps(review_json), headers=headers)
+    review_uri = response.headers['Location']
+    print("Review instance " + review_uri)
+    instances.append(review_uri)
 
+    ## Comments
+    comment_json = load_json('comment_1_win8_instance.json')
+    comment_json['http://semantica.globo.com/tech/schemas/comments'] = review_uri
+    response = requests.post('http://localhost:5100/data/tech/comments', data=json.dumps(comment_json), headers=headers)
+    comment_uri = response.headers['Location']
+    print("Comment instance " + comment_uri)
+    instances.append(comment_uri)
 
     return instances
 
