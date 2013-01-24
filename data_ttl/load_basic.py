@@ -77,16 +77,17 @@ def load_instances():
     comment_json = load_json('comment_1_win8_instance.json')
     comment_json['http://semantica.globo.com/tech/schemas/comments'] = review_uri
     response = requests.post('http://localhost:5100/data/tech/comments', data=json.dumps(comment_json), headers=headers)
-    comment_uri = response.headers['Location']
-    print("Comment instance " + comment_uri)
-    instances.append(comment_uri)
+    comment_uri1 = response.headers['Location']
+    print("Comment instance " + comment_uri1)
+    instances.append(comment_uri1)
 
     comment_json = load_json('comment_2_win8_instance.json')
     comment_json['http://semantica.globo.com/tech/schemas/comments'] = review_uri
+    comment_json['http://semantica.globo.com/tech/schemas/replies'] = comment_uri1
     response = requests.post('http://localhost:5100/data/tech/comments', data=json.dumps(comment_json), headers=headers)
-    comment_uri = response.headers['Location']
-    print("Comment instance " + comment_uri)
-    instances.append(comment_uri)
+    comment_uri2 = response.headers['Location']
+    print("Comment instance " + comment_uri2)
+    instances.append(comment_uri2)
 
     return instances
 

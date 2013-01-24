@@ -10,12 +10,35 @@ TODO
 1. Consultas
   ✓ review de 1 dada categoria ordenada por contagem de cometários
   
-      START r=node:reviews("slug:*") 
-      MATCH r-[:revises]->()-[:in_category]->c, m-[:has_context]->r  
-      WHERE c.slug="\"SO\"" 
-      RETURN r,count(m) 
-      ORDER BY count(m) DESC;
-  
+  <cypher>
+        
+        START r=node:reviews("slug:*") 
+        MATCH r-[:revises]->()-[:in_category]->c, m-[:has_context]->r  
+        WHERE c.slug="\"SO\"" 
+        RETURN r,count(m) 
+        ORDER BY count(m) DESC;
+
+  </cypher>    
+
+
+   <sparql>
+
+        PREFIX s: <http://semantica.globo.com/tech/schemas/>
+        PREFIX cat: <http://semantica.globo.com/tech/software-categories/>
+ 
+        select (count(?comment) as ?commentCount) ?review  from <http://mythical_poc.globo.com/tech/> 
+        {
+          ?review a s:SoftwareReview .
+          ?review s:revises ?software .
+          ?software s:in_category cat:OperatingSystem .
+          ?review s:has_comment ?comment .
+        
+        } 
+        ORDER BY DESC(?commentCount)    
+
+   </sparql>
+   
+   
   ✓ listagem de linguagens de query suportadas 
   ✓ consulta textual restrita a um tipo
   ✓ dado comentário recuperar caminho de comments até review

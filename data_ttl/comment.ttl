@@ -24,6 +24,11 @@
               rdfs:domain :Comment;
               rdfs:range xsd:string .
 
+:replies a owl:ObjectProperty ;
+         rdfs:label "Responde"@pt ;
+         rdfs:domain :Comment;
+         rdfs:range :Comment .
+
 :has_comment a owl:ObjectProperty ;
              rdfs:label "Comenta"@pt ;
              rdfs:domain :SoftwareReview;
