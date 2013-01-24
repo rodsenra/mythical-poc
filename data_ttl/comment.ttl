@@ -28,7 +28,5 @@
 
 :comments a owl:ObjectProperty ;
           owl:inverseOf :has_comment ;
-          rdfs:label "Comenta"@pt ;
-          rdfs:domain :Comment ;
-          rdfs:range  :SoftwareReview .
+          rdfs:label "Comenta"@pt .
 
