@@ -1,4 +1,5 @@
 {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://semantica.globo.com/tech/schemas/SoftwareReview",
     "http://semantica.globo.com/tech/schemas/title": "Windows 8: Hit or Miss ?",
     "http://semantica.globo.com/tech/schemas/revises": "http://semantica.globo.com/tech/softwares/a3f8b8e4-f44b-4e11-b236-62911301639d"
 }
