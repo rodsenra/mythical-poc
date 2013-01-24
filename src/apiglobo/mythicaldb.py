@@ -116,6 +116,26 @@ def inverse_of(predicate, context):
     return results
 
 
+def clean_up_dict(d):
+    result = {}
+    for key, old_container in d.items():
+        if isinstance(old_container, dict):
+            # transform (dict of dicts) into (list of dicts)
+            new_container = []
+            for k,v in old_container.items():
+                v['uri'] = k  
+                new_container.append(v)
+            result[key] = new_container
+        else:
+            # there is no transformation, just copy key/value into new dict
+            result[key] = old_container
+            
+        # simplify unitary list
+        if isinstance(result[key], list) and len(result[key])==1:
+            result[key] = result[key][0]
+
+    return result
+
 def retrieve_instance(context, collection, slug):
     uri = "/".join((BASE_URI, context, collection, slug))
     graph = DEFAULT_GRAPH + context + "/"
@@ -133,15 +153,20 @@ def retrieve_instance(context, collection, slug):
     for row in triples:
         key = row['property']['value']
         if 'nested_property' not in row:
-            create_or_append_to_list(result, key, row['value']['value'])
+            result[key] = row['value']['value']
+            #create_or_append_to_list(result, key, row['value']['value'])
         else:
+            # I have nested properties
             if key not in result:
-                result[key] = [{}]
+                result[key] = {}
+            property_key = row['value']['value']
+            if property_key not in result[key]:
+                result[key][property_key] = {}
             nested_key =  row['nested_property']['value']
-            result[key][nested_key] = row['nested_value']['value']
+            result[key][property_key][nested_key] = row['nested_value']['value']
 
 
-    return result
+    return clean_up_dict(result)
 
 # FIXME: implement transaction all-or-nothing to add data to all DBs
 
