@@ -124,13 +124,19 @@ def retrieve_instance(context, collection, slug):
     # FIX: verify operation success
     triples = query_result['results']['bindings']
     result = {}
+    def create_or_append_to_list(container, key, item):
+        if key in container:
+            container[key].append(item)
+        else:
+            container[key] = [item]
+    
     for row in triples:
         key = row['property']['value']
         if 'nested_property' not in row:
-            result[key] = row['value']['value']
+            create_or_append_to_list(result, key, row['value']['value'])
         else:
             if key not in result:
-                result[key] = {}
+                result[key] = [{}]
             nested_key =  row['nested_property']['value']
             result[key][nested_key] = row['nested_value']['value']
 

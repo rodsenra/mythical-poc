@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import requests
+from requests.auth import HTTPDigestAuth
 import time
 import sys
 
@@ -20,7 +21,9 @@ def load_string(filename):
 
 def wipeout_armageddon():
     print("Clean up databases")
-    requests.get('http://localhost:8890/sparql-auth?uri="/sparql-auth?default-graph-uri=&query=CLEAR+GRAPH+%3Chttp%3A%2F%2Fmythical_poc.globo.com%2Ftech%2F%3E&should-sponge=&format=text%2Fhtml&timeout=0&debug=on" --digest --user api-semantica:api-semantica')  
+    response = requests.get('http://localhost:8890/sparql-auth?default-graph-uri=&query=%0D%0Aclear+graph+%3Chttp%3A%2F%2Fmythical_poc.globo.com%2Ftech%2F%3E&should-sponge=&format=text%2Fhtml&timeout=0&debug=on',
+                             auth=HTTPDigestAuth('api-semantica', 'api-semantica'))  
+    print(response)
 
 def load_schemas():
     print("Load schemas")
@@ -72,6 +75,13 @@ def load_instances():
 
     ## Comments
     comment_json = load_json('comment_1_win8_instance.json')
+    comment_json['http://semantica.globo.com/tech/schemas/comments'] = review_uri
+    response = requests.post('http://localhost:5100/data/tech/comments', data=json.dumps(comment_json), headers=headers)
+    comment_uri = response.headers['Location']
+    print("Comment instance " + comment_uri)
+    instances.append(comment_uri)
+
+    comment_json = load_json('comment_2_win8_instance.json')
     comment_json['http://semantica.globo.com/tech/schemas/comments'] = review_uri
     response = requests.post('http://localhost:5100/data/tech/comments', data=json.dumps(comment_json), headers=headers)
     comment_uri = response.headers['Location']

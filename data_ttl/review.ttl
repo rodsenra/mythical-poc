@@ -4,18 +4,18 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix up: <http://semantica.globo.com/upper/> .
 
-# http://semantica.globo.com/software/SoftwareReview
+# http://semantica.globo.com/tech/schemas/SoftwareReview
 :SoftwareReview a up:Schema ;
                 up:collectionName "reviews" ;
                 rdfs:label "Review de Software"@pt .
 
-# http://semantica.globo.com/software/title
+# http://semantica.globo.com/tech/schemas/title
 :title a owl:DatatypeProperty ;
       rdfs:label "Título"@pt ;
       rdfs:domain :SoftwareReview ;
       rdfs:range xsd:string .
 
-# http://semantica.globo.com/software/revises
+# http://semantica.globo.com/tech/schemas/revises
 :revises a  owl:ObjectProperty ;
          rdfs:domain :SoftwareReview ;
          rdfs:range :Software .

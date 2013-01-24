@@ -8,6 +8,9 @@
 @prefix up: <http://semantica.globo.com/upper/> .
 
 :Comment a up:Schema ;
+          owl:subClassOf up:Object,
+                         dbpedia:Work ,
+                         schema:CreativeWork ;
          up:collectionName "comments" ;
          rdfs:label "Comentário"@pt .
 
