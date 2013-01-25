@@ -178,7 +178,7 @@ Example of payload:
 }
 ```
 
-<TODO> URI prefix resolution
+-=|  TODO  |=- URI prefix resolution
 
 Setup before using Virtuoso
 ---------------------------
