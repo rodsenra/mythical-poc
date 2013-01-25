@@ -24,7 +24,7 @@ Requirements for the New Platform
 Objectives for this project
 ===========================
 
- 1) Design a draft of the new architecture for content publication.
+ 1) Draft of the new architecture for content publication.
     Define a first version of the interfaces and contracts between the
     several components of the architecture.
     There is no need for a complete implementation at the end of the project.
