@@ -8,7 +8,8 @@ to the redesign of Globo.com platform infra-structure.
 Requirements for the New Platform
 =================================
 
-  Backend as a Service (BaaS) composed by cloud-based RESTful services: 
+  Backend as a Service (BaaS) composed by cloud-based RESTful services:
+  
     * unified CMA
     * uniform access to all enterprise data (CMS, Search, Semantics)
     * authentication
