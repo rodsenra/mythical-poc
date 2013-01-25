@@ -7,8 +7,10 @@ from apiglobo.mythicaldb import DEFAULT_NAMESPACE as NAMESPACE
 
 data_blueprint = Blueprint('data_blueprint', __name__)
 
+
 def primary_validation():
     pass
+
 
 @data_blueprint.route("/data", methods=['GET'])
 def list():
@@ -20,6 +22,7 @@ def list():
 #@crossdomain(origin='*')
 #def create_schema(ctx):
 #    pass
+
 
 @data_blueprint.route("/data/<ctx>/schemas/<slug>", methods=['PUT', 'OPTIONS'])
 @crossdomain(origin='*')
@@ -33,11 +36,6 @@ def create_schema_with_slug(ctx, slug):
 @data_blueprint.route("/data/<ctx>/schemas", methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
 def list_schemas(ctx):
-    pass
-
-@data_blueprint.route("/data/<ctx>/schemas/<slug>", methods=['GET', 'OPTIONS'])
-@crossdomain(origin='*')
-def retrieve_schema(ctx, slug):
     pass
 
 @data_blueprint.route("/data/<ctx>/<collection>", methods=['POST', 'OPTIONS'])
@@ -65,6 +63,13 @@ def retrieve_instance(ctx, collection, slug):
     primary_validation()
     json_dict = mythicaldb.retrieve_instance(ctx, collection, slug)
     return jsonify(json_dict)
+
+#@data_blueprint.route("/data/<ctx>/schemas/<slug>", methods=['GET', 'OPTIONS'])
+#@crossdomain(origin='*')
+#def retrieve_schema(ctx, slug):
+#    primary_validation()
+#    json_dict = mythicaldb.retrieve_instance(ctx, "schemas", slug)
+#    return jsonify(json_dict)
 
 
 @data_blueprint.route("/data/query", methods=['GET'])
