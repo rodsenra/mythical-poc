@@ -39,7 +39,7 @@ References
 ==========
 
  * https://github.com/globocom/mysqlapi
- * Cloud CMS 
+ * Cloud CMS http://code.cloudcms.com/javascript-samples/#/components/node-type
 
 Desired features
 ================
@@ -182,5 +182,5 @@ Example of payload:
 
 Setup before using Virtuoso
 ---------------------------
-  create graph <http://mythical_poc.globo.com>
 
+CREATE GRAPH <http://mythical_poc.globo.com>
