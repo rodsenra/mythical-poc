@@ -8,7 +8,7 @@ TODO
 ---
 
 1. Consultas
-  ✓ review de 1 dada categoria ordenada por contagem de cometários
+  ✓ reviews de softwares de uma categoria específica (e.g.== S.O.) ordenada por contagem de comentários
   
   <cypher>
         
@@ -28,11 +28,10 @@ TODO
  
         select (count(?comment) as ?commentCount) ?review  from <http://mythical_poc.globo.com/tech/> 
         {
-          ?review a s:SoftwareReview .
-          ?review s:revises ?software .
-          ?software s:in_category cat:OperatingSystem .
-          ?review s:has_comment ?comment .
-        
+          ?review   a               s:SoftwareReview .
+          ?review   s:revises       ?software .
+          ?review   s:has_comment   ?comment .
+          ?software s:in_category   cat:OperatingSystem .
         } 
         ORDER BY DESC(?commentCount)    
 

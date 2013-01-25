@@ -8,7 +8,8 @@ to the redesign of Globo.com platform infra-structure.
 Requirements for the New Platform
 =================================
 
-  Backend as a Service (BaaS) composed by cloud-based RESTful services: 
+  Backend as a Service (BaaS) composed by cloud-based RESTful services:
+  
     * unified CMA
     * uniform access to all enterprise data (CMS, Search, Semantics)
     * authentication
@@ -23,7 +24,7 @@ Requirements for the New Platform
 Objectives for this project
 ===========================
 
- 1) Design a draft of the new architecture for content publication.
+ 1) Draft of the new architecture for content publication.
     Define a first version of the interfaces and contracts between the
     several components of the architecture.
     There is no need for a complete implementation at the end of the project.

@@ -170,55 +170,6 @@ def retrieve_instance(context, collection, slug):
 
 # FIXME: implement transaction all-or-nothing to add data to all DBs
 
-def retrieve(namespace, resource_type, resource_id):
-    # Obtain instance from type + slug
-    instance_index = graph_db.get_index(neo4j.Node, resource_type)
-    instance_nodes = instance_index.get("slug", resource_id)
-    if not instance_nodes:
-        return None
-
-    # FIXME: generate error if more than one instance is found
-    instance_node = instance_nodes[0]
-    instance_obj = unmarshal_node(instance_node.get_properties())
-
-    if instance_obj.get('$schema') != JSON_SCHEMA_URI:
-        # Obtain schema from given instance
-        # FIXME: generate error if more than one schema is retrieved from describedby
-
-        relations = instance_node.get_relationships()
-        for relation in relations:
-            if relation.type=='describedby':
-                continue
-            values = []
-            for related_node in relation.nodes:
-                if related_node == instance_node:
-                    continue
-                values.append(unmarshal_node(related_node.get_properties()))
-            if len(values)==1:
-                instance_obj[relation.type] = values[0]
-            else:
-                instance_obj[relation.type] = values
-        
-#        schema_node = instance_node.get_related_nodes(0,"describedby")[0]
-#        prop_str = schema_node.get_properties()["properties"]
-#        schema_properties = json.loads(prop_str)
-#        refs = get_references_from_input_json(schema_properties)
-#        for key, relationship_name, value in refs:
-#            related_nodes = instance_node.get_related_nodes(0, relationship_name)
-#            values = []
-#            for related_node in related_nodes:
-#                values.append(unmarshal_node(related_node.get_properties()))
-#            if len(values)==1:
-#                instance_obj[key] = values[0]
-#            else:
-#                instance_obj[key] = values
-        
-    return instance_obj
-
-    #object_in_es = txt_search_db.get(namespace, resource_type, resource_id)
-    #return object_in_es['_source']
-
-
 def update(obj, namespace, resource_type, resource_id):
     pass
 
@@ -228,31 +179,9 @@ def create_or_update(obj, ctx, resource_collection, slug):
     # We assume that optional fields are not present in the input data (json format),
     # if this holds then we should remove non-filled fields
     refered_node = None
-    # FIXME: map the ctx concept to Neo4J
-    #ref_index = graph_db.get_index(neo4j.Node, resource_collection)
-    
-#    if ref_index:
-#        refered_node = ref_index.get("slug", slug)
-#    
-#    if refered_node:
-#        update(obj, ctx, resource_collection, slug)
-#    else:
     create(obj, ctx, resource_collection, slug)
 
 
 def delete(namespace, resource_type, resource_id):
     pass
 
-
-def search(text, namespace=None, resource_type=None):
-    return txt_search_db.search(text, doc_type=resource_type, index=namespace)
-
-
-def graph_query(language, data_payload):
-    if language == "cypher":
-        headers = {'Content-type': 'application/json'}
-        response = requests.post('http://localhost:7474/db/data/cypher', data=data_payload, headers=headers)
-        return response.text
-    elif language == "gremlin":
-        response = gremlin.execute(data_payload, graph_db)
-        return {"response" : response}
