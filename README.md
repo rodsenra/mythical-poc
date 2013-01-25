@@ -4,12 +4,11 @@ Introduction
 This is a proof-of-concept implementation developed to explore issues relevant
 to the redesign of Globo.com platform infra-structure.
 
-
 Requirements for the New Platform
 =================================
 
   Backend as a Service (BaaS) composed by cloud-based RESTful services:
-  
+
     * unified CMA
     * uniform access to all enterprise data (CMS, Search, Semantics)
     * authentication
@@ -18,8 +17,7 @@ Requirements for the New Platform
 
   The new architeture should naturally lead to support for mobile apps
 
-  API Requests (80%) should respond below 20ms.
-
+  For the data acess layer, the main concern of this project, API Requests (80%) should respond below 20ms.
 
 Objectives for this project
 ===========================
@@ -37,19 +35,11 @@ Objectives for this project
   does CMA+CDA for some content using the base elements of new architecture.
   The focus will be to elucidate doubts about the new architecture.
 
-Data Model
-==========
-
-  Review <----> Software <-----> Categoria
-     |                 \----------> Rating
-     |
-     \- Title
-      \- Comments -> Comment
-
 References
 ==========
 
  * https://github.com/globocom/mysqlapi
+ * Cloud CMS 
 
 Desired features
 ================
@@ -116,6 +106,18 @@ python -m SimpleHTTPServer
 In all examples from now on we use a context named *tech* and a
 a collection named *software*.
 
+Data Model of the example
+==========
+
+  Review <----> Software <-----> Categoria
+     |                 \----------> Rating
+     |
+     \- Title
+      \- Comments -> Comment
+
+Interface examples
+======
+
 List all contexts and operations
 --------
 
@@ -176,3 +178,4 @@ TODO: URI prefix resolution
 Setup before using Virtuoso
 ---------------------------
   create graph <http://mythical_poc.globo.com>
+
