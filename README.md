@@ -44,8 +44,8 @@ References
 Desired features
 ================
 
-  * the definiton of data structures shoul carry its own documentation
-  * versioning (which level: API, resource, ...)
+  * The definiton of data structures shoul carry its own documentation
+  * Versioning (which level: API, resource, ...)
   * Role-based access control (RBAC) model for authorization profiles 
 
 Configuration
@@ -109,11 +109,16 @@ a collection named *software*.
 Data Model of the example
 ==========
 
-  Review <----> Software <-----> Categoria
-     |                 \----------> Rating
-     |
-     \- Title
-      \- Comments -> Comment
+A Software has a name.
+A Software has a category.
+
+A Review has a title.
+A Review might be about a Software.
+A Review has a rating about the sotware it refers to.
+A Review also has comments associated to it.
+
+A comment has a user name.
+A comment has a text body.
 
 Interface examples
 ======
