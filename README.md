@@ -92,7 +92,12 @@ in a common language.
 Likewise, we expect a schema to be easily written, by using the Turtle format, the
 most compact serialization of RDF/OWL models.
 
-Instances
+Collection
+--
+
+A schema defines a group of instances of the same type, hereby named a collection.
+
+Instance
 ---
 
 Instances must be easily retrieved and "instance queries" must be really simple
@@ -107,82 +112,66 @@ cd ./jsonform/
 
 python -m SimpleHTTPServer
 
-Getting all data from all contexts
+In all examples from now on we use a context named *tech* and a
+a collection named *software*.
+
+List all contexts and operations
 --------
 
-*GET* 'http://localhost:5100/data/my_context/schemas/software' -H 'Content-type: application/json'
-
-Add Data
---------
-
-Adding schemas
----
-
-```bash
-POST 
+```http
+GET 'http://localhost:5100/data'
 ```
 
+List all schemas of a context
+---
+
+```http
+GET 'http://localhost:5100/data/tech/schemas'
+```
+
+Get a specific schema of a context
+---
+
+```http
+GET 'http://localhost:5100/data/tech/schemas/software'
+```
+
+Create schema
+---
+
+```http
+PUT 'http://localhost:5100/data/tech/schemas/software' -H 'Content-type: text/turtle'
+```
+
+The payload for this request will be something like:
+
+    :Software a up:Schema ;
+          owl:subClassOf up:Object,
+                         dbpedia:Work ,
+                         schema:CreativeWork ;
+          owl:equivalentClass schema:SoftwareApplication ;
+          up:collectionName "softwares" ;
+          rdfs:label "Software"@pt .
 
 Adding instances
 ---
 
-```bash
+```http
+POST 'http://localhost:5100/data/tech/software' -H 'Content-type: application/json'
 ```
 
-Retrieving data
-------------
+Example of payload:
 
-
-```bash
-curl -i -XPUT  'http://localhost:5100/data/schemas/software' -H 'Content-type: application/json' -T software_schema.json
+```json
+{
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://semantica.globo.com/tech/schemas/Software",
+    "http://semantica.globo.com/tech/schemas/name": "Windows 8",
+    "http://semantica.globo.com/tech/schemas/in_category": "http://semantica.globo.com/tech/software-categories/OperatingSystem"
+}
 ```
 
-```bash
-curl -i -XPUT  'http://localhost:5100/data/schemas/review' -H 'Content-type: application/json' -T review_schema.json
-```
-
-```bash
-curl -i -XPOST  'http://localhost:5100/data/softwares' -H 'Content-type: application/json' -T software_instance.json
-```
-
-Query textual data
-------------------
-curl -i -X GET "http://localhost:5100/data/reviews?q=\"windows\""
-
-List supported query languages
-------------------------------
-
-curl -i -XGET 'http://localhost:5100/data/query'
-
-
-Query using Cypher
-------------------
-  curl -i -X GET  "http://localhost:5100/data/query/cypher" -H "Content-type: application/json" -T cypher_query.json
-
-Query using Gremlin
--------------------
-  curl -i -X GET  "http://localhost:5100/data/query/gremlin" -H "Content-type: application/json" -d "g.v(37).map()"
-
-Clean-up ElasticSearch
-----------------------
-  curl -X DELETE http://localhost:9200/data
-
-Query ES
---------
-  curl -XGET 'http://localhost:9200/data/_search?q=uid:"/data/schemas/software"&pretty=true'
-
-Clean-up Neo4j
---------------
-  start no=relationship(*) delete no;
-  start no=node(*) delete no;
+TODO: URI prefix resolution
 
 Setup before using Virtuoso
 ---------------------------
   create graph <http://mythical_poc.globo.com>
-
-
-Deprecated
-==========
-
- curl -i -XPOST 'http://localhost:5100/data/reviews' -H "Content-Type: application/json"  -d '{"title":"Novissimo Bla"}'
- curl -i -XPOST 'http://localhost:5100/schemas' -H "Content-Type: application/json"  -T "schemas/review_schema.json"
