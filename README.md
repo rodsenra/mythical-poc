@@ -4,12 +4,11 @@ Introduction
 This is a proof-of-concept implementation developed to explore issues relevant
 to the redesign of Globo.com platform infra-structure.
 
-
 Requirements for the New Platform
 =================================
 
   Backend as a Service (BaaS) composed by cloud-based RESTful services:
-  
+
     * unified CMA
     * uniform access to all enterprise data (CMS, Search, Semantics)
     * authentication
@@ -18,8 +17,7 @@ Requirements for the New Platform
 
   The new architeture should naturally lead to support for mobile apps
 
-  API Requests (80%) should respond below 20ms.
-
+  For the data acess layer, the main concern of this project, API Requests (80%) should respond below 20ms.
 
 Objectives for this project
 ===========================
@@ -37,25 +35,17 @@ Objectives for this project
   does CMA+CDA for some content using the base elements of new architecture.
   The focus will be to elucidate doubts about the new architecture.
 
-Data Model
-==========
-
-  Review <----> Software <-----> Categoria
-     |                 \----------> Rating
-     |
-     \- Title
-      \- Comments -> Comment
-
 References
 ==========
 
  * https://github.com/globocom/mysqlapi
+ * Cloud CMS http://code.cloudcms.com/javascript-samples/#/components/node-type
 
 Desired features
 ================
 
-  * the definiton of data structures shoul carry its own documentation
-  * versioning (which level: API, resource, ...)
+  * The definiton of data structures shoul carry its own documentation
+  * Versioning (which level: API, resource, ...)
   * Role-based access control (RBAC) model for authorization profiles 
 
 Configuration
@@ -137,6 +127,23 @@ python -m SimpleHTTPServer
 In all examples from now on we use a context named *tech* and a
 a collection named *software*.
 
+Data Model of the example
+==========
+
+    * A Software has a name.
+    * A Software has a category.
+
+    * A Review has a title.
+    * A Review might be about a Software.
+    * A Review has a rating about the sotware it refers to.
+    * A Review also has comments associated to it.
+
+    * A comment has a user name.
+    * A comment has a text body.
+
+Interface examples
+======
+
 List all contexts and operations
 --------------------------------
 
@@ -186,14 +193,15 @@ Example of payload:
 
 ```json
 {
-    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://semantica.globo.com/tech/schemas/Software",
-    "http://semantica.globo.com/tech/schemas/name": "Windows 8",
-    "http://semantica.globo.com/tech/schemas/in_category": "http://semantica.globo.com/tech/software-categories/OperatingSystem"
+    "rdfs:type": "tech_schemas:Software",
+    "tech_schemas:name": "Windows 8",
+    "tech_schemas:in_category": "tech:software-categories/OperatingSystem"
 }
 ```
 
-TODO: URI prefix resolution
+-=|  TODO  |=- URI prefix resolution
 
 Setup before using Virtuoso
 ---------------------------
-  create graph <http://mythical_poc.globo.com>
+
+CREATE GRAPH <http://mythical_poc.globo.com>
