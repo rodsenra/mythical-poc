@@ -4,6 +4,7 @@ Introduction
 This is a proof-of-concept implementation developed to explore issues relevant
 to the redesign of Globo.com platform infra-structure.
 
+Recewntly surfaced the project http://orchestrate.io/ that seems to be related to these ideas..
 
 Requirements for the New Platform
 =================================
